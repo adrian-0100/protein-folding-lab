@@ -12,6 +12,9 @@ Two experiments are already run. Read this page first, then them, in order:
    mutations whose real structures are known. Does it predict the one that moves?
    (No.)
 
+Three more are written up and ready to run:
+[docs/next-experiments.md](docs/next-experiments.md).
+
 ## The idea in five minutes
 
 A protein is a chain of amino acids. There are 20 kinds, each written as one letter,

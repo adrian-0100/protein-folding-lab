@@ -114,22 +114,27 @@ GPU PC, running ten at a time.
 ## What the student does with it
 
 Reproducing experiment 002 is weeks 1-2, not the project. The project is one
-question that 002 leaves open. Each of these keeps the same skeleton and needs
-only a new `experiment.toml` and a new protocol:
+question that 002 leaves open. Each of these keeps the same skeleton. The first
+three now have a full protocol, checked against the data but not yet run; see
+[the next three experiments](next-experiments.md).
 
 1. **Does a tool built for the question do better?** AlphaFold2 could not tell a
-   harmful mutation from a harmless one. Run a stability or variant-effect
-   predictor on I56T and D67H, plus two or three lysozyme variants known to be
-   harmless, and ask whether it separates them. This is the most direct follow-up
-   and needs no new structures.
+   harmful mutation from a harmless one. Score mutations with tools made for that
+   and compare with a laboratory measurement. Lysozyme has too few documented
+   variants for this, so the protocol uses ubiquitin, where 1,195 mutants have
+   been measured:
+   [experiment 003](../experiments/003-ubiquitin-variant-effect/README.md).
 2. **Is it the same with more mutants?** Two mutations are an anecdote. Phage T4
    lysozyme has hundreds of mutant crystal structures in the PDB. Pick ten, half
    that move the backbone and half that do not, and measure how often the
    prediction follows the experiment. This turns the result into a rate, with a
-   table and a plot, using descriptive statistics only.
+   table and a plot, using descriptive statistics only:
+   [experiment 005](../experiments/005-t4-lysozyme-panel/README.md). The best fit
+   for a student.
 3. **Does letting the network look at known structures change the answer?** 002
    ran without templates. Rerun it with templates on and compare. A one-setting
-   change with a clear yes-or-no outcome; good for a short project.
+   change with a clear outcome; good for a short project:
+   [experiment 004](../experiments/004-lysozyme-templates/README.md).
 4. **Bring it to physiology.** Apply the same design to a protein from Fisiología
    Avanzada whose mutant has a crystal structure, chosen by the student. The
    criteria: under about 250 residues, single chain, wild-type and mutant
