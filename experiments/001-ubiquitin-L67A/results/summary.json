@@ -1,0 +1,202 @@
+{
+  "experiment": "001-ubiquitin-L67A",
+  "baseline": "wt",
+  "msa_unique_sequences": 20566,
+  "variants": {
+    "wt": {
+      "predictions": 10,
+      "plddt_mean": {
+        "median": 95.338,
+        "min": 93.683,
+        "max": 96.021,
+        "n": 10
+      },
+      "plddt_min": {
+        "median": 47.905,
+        "min": 45.09,
+        "max": 55.81,
+        "n": 10
+      },
+      "ptm": {
+        "median": 0.83,
+        "min": 0.8,
+        "max": 0.84,
+        "n": 10
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.378,
+        "min": 0.364,
+        "max": 0.418,
+        "n": 10
+      }
+    },
+    "L67A": {
+      "predictions": 10,
+      "plddt_mean": {
+        "median": 95.336,
+        "min": 93.208,
+        "max": 95.918,
+        "n": 10
+      },
+      "plddt_min": {
+        "median": 47.375,
+        "min": 45.72,
+        "max": 54.25,
+        "n": 10
+      },
+      "ptm": {
+        "median": 0.83,
+        "min": 0.79,
+        "max": 0.84,
+        "n": 10
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.4,
+        "min": 0.38,
+        "max": 0.427,
+        "n": 10
+      }
+    }
+  },
+  "mutants": {
+    "L67A": {
+      "sites": [
+        67
+      ],
+      "neighbors_within_cutoff": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        23,
+        26,
+        43,
+        44,
+        45,
+        50,
+        56,
+        61,
+        65,
+        66,
+        68,
+        69
+      ],
+      "signed_delta_plddt_site_median": -0.19,
+      "signed_delta_plddt_mean_median": -0.097,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.085,
+            "min": 0.079,
+            "max": 0.09,
+            "n": 10
+          },
+          "seed_noise": {
+            "median": 0.03,
+            "min": 0.023,
+            "max": 0.033,
+            "n": 10
+          },
+          "model_noise": {
+            "median": 0.127,
+            "min": 0.094,
+            "max": 0.179,
+            "n": 20
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": false,
+          "verdict": "above noise"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.258,
+            "min": 0.107,
+            "max": 0.441,
+            "n": 10
+          },
+          "seed_noise": {
+            "median": 0.029,
+            "min": 0.021,
+            "max": 0.41,
+            "n": 10
+          },
+          "model_noise": {
+            "median": 0.274,
+            "min": 0.092,
+            "max": 0.455,
+            "n": 20
+          },
+          "exceeds_seed_noise": false,
+          "exceeds_model_noise": false,
+          "verdict": "within noise"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.19,
+            "min": 0.07,
+            "max": 0.88,
+            "n": 10
+          },
+          "seed_noise": {
+            "median": 0.06,
+            "min": 0.0,
+            "max": 0.32,
+            "n": 10
+          },
+          "model_noise": {
+            "median": 0.285,
+            "min": 0.0,
+            "max": 1.25,
+            "n": 20
+          },
+          "exceeds_seed_noise": false,
+          "exceeds_model_noise": false,
+          "verdict": "within noise"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.131,
+            "min": 0.005,
+            "max": 0.72,
+            "n": 10
+          },
+          "seed_noise": {
+            "median": 0.119,
+            "min": 0.015,
+            "max": 0.614,
+            "n": 10
+          },
+          "model_noise": {
+            "median": 0.768,
+            "min": 0.013,
+            "max": 2.338,
+            "n": 20
+          },
+          "exceeds_seed_noise": false,
+          "exceeds_model_noise": false,
+          "verdict": "within noise"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Ile44 hydrophobic patch (binds most partners)": 3.8,
+        "Lys48 (chain linkage: degradation signal)": 9.8,
+        "Lys63 (chain linkage: signalling)": 9.5,
+        "Gly76 C-terminus (attaches to substrates)": 25.4
+      },
+      "site_evidence": [
+        {
+          "position": 67,
+          "residue": "L",
+          "new_residue": "A",
+          "new_residue_frequency_in_msa": 0.0024,
+          "identity_in_msa": 0.593,
+          "conservation": 0.615,
+          "conservation_rank": "17 of 76",
+          "relative_accessibility": 0.0,
+          "most_common_substitutions": "I:22% V:14% F:2%"
+        }
+      ]
+    }
+  }
+}

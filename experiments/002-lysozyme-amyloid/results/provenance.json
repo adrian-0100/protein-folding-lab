@@ -1,0 +1,48 @@
+{
+  "experiment": "002-lysozyme-amyloid",
+  "software": {
+    "colabfold": "1.6.3",
+    "alphafold-colabfold": "2.3.20",
+    "jax": "0.11.2",
+    "python": "3.12.16",
+    "platform": "macOS-26.4.1-arm64-arm-64bit"
+  },
+  "weights": "alphafold_params_2021-07-14 (AlphaFold2-ptm)",
+  "settings": {
+    "model_type": "alphafold2_ptm",
+    "msa_mode": "mmseqs2_uniref_env",
+    "num_models": 5,
+    "num_recycle": 3,
+    "num_seeds": 2,
+    "random_seed": 0
+  },
+  "inputs_sha256": {
+    "msa/wt.a3m": "a61a2ca51f777c4c9149555929780d2356d35035f705e6175408682bb5dbbe94",
+    "msa/I56T.a3m": "a3231c2779cd6afd333858789823fd90b8eac770505dbe29c90e7f181a64455b",
+    "msa/D67H.a3m": "921e5322c432a7f9fd062f4da31c938d89e5ed12fc22afffaaaecb2005c5a8f1"
+  },
+  "prediction_runs": [
+    {
+      "recorded_utc": "2026-11-10T04:30:32+00:00",
+      "variants": [
+        "wt",
+        "I56T"
+      ],
+      "parallel_processes": 10,
+      "wall_seconds": 662.0,
+      "seconds_per_process": {
+        "wt model 1": 659.9,
+        "wt model 2": 0.0,
+        "wt model 3": 0.0,
+        "wt model 4": 0.0,
+        "wt model 5": 0.0,
+        "I56T model 1": 662.0,
+        "I56T model 2": 661.9,
+        "I56T model 3": 0.0,
+        "I56T model 4": 0.0,
+        "I56T model 5": 661.0
+      },
+      "machine": "remote-gpu-pc"
+    }
+  ]
+}

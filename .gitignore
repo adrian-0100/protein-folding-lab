@@ -1,0 +1,29 @@
+.venv/
+__pycache__/
+.DS_Store
+*.zip
+
+# AlphaFold2 parameters: 3.7 GB, downloaded by the pipeline.
+weights/
+
+# Raw search output; the alignment that is actually used is kept in msa/.
+experiments/*/msa/_search/
+
+# ColabFold leftovers inside prediction folders: large intermediate files, and a
+# copy of the input alignment in every output folder (the original is in msa/).
+*.pickle
+experiments/*/predictions/**/*.a3m
+
+# Traces of a run on the remote GPU PC.
+experiments/*/remote.log
+experiments/*/.remote.*
+
+# Machine-specific settings (address, logins, who has access, host identity), and key pairs
+# generated for guests. Never commit private keys.
+infra/remote-gpu-pc/remote.env
+infra/remote-gpu-pc/authorized_keys
+infra/remote-gpu-pc/known_hosts
+infra/remote-gpu-pc/invites/
+
+# Earlier runs kept on this machine only (see experiments/*/NOTEBOOK.md).
+archive/

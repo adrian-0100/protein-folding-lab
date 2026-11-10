@@ -1,0 +1,400 @@
+#!/usr/bin/env bash
+# Send the heavy lifting to the remote GPU PC. Run from your laptop.
+#
+# Using it
+#   remote run <experiment> [step]   copy the experiment over, run it there, bring the results back
+#   remote bootstrap                 first time: install the project and the AlphaFold2 weights there
+#   remote ssh                       open a shell there as the guest account
+#   remote check                     confirm, from the guest side, that the account is boxed in
+#   remote ssh-config                print lines to paste into ~/.ssh/config
+#
+# Deciding who gets in (from the local network; each asks for the remote administrator's password)
+#   remote admin-install             create the guest account (once)
+#   remote grant <key.pub> <name>    let someone in with a public key they sent you
+#   remote invite <name>             make a key pair for someone and a folder to send them
+#   remote revoke <name>             take someone's access away
+#   remote who                       list who has access
+#   remote admin-check               rerun the lock-down checks there
+#   remote admin-uninstall [--delete-account]   remove guest access (and optionally the account)
+#
+# Reaching it from outside the local network (run these from inside it; no password needed)
+#   remote tunnel-install            open a free Cloudflare quick tunnel to its SSH (random address)
+#   remote tunnel-install <hostname> the same with a permanent name; needs a domain in Cloudflare
+#   remote tunnel-status             is it up, and what is the address now (it changes on restart)
+#   remote tunnel-uninstall
+#
+# Settings: environment variables, or a file `remote.env` next to this script (see remote.env.example).
+#   REMOTE_HOST (required)  REMOTE_ADMIN (required)  REMOTE_PORT (22)  REMOTE_KEY (~/.ssh/id_ed25519)
+#   REMOTE_TUNNEL (hostname, written by tunnel-install)  REMOTE_ROUTE (auto | lan | tunnel | tailnet)
+#   REMOTE_TAILNET (optional Tailscale name): for the administrator only, when away and without a tunnel
+#   REMOTE_JOBS (10): how many predictions run there at the same time
+#   REMOTE_PROBE_PORTS ("3000 5432 8080"): local ports `check` makes sure the guest cannot reach
+#   REMOTE_MACHINE (remote-gpu-pc): the machine name written into results/provenance.json
+
+set -euo pipefail
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$HERE/../.." && pwd)"
+# Values already in the environment win over the file.
+ENV_ROUTE="${REMOTE_ROUTE:-}"
+# shellcheck disable=SC1091
+[[ -f "$HERE/remote.env" ]] && source "$HERE/remote.env"
+
+HOST="${REMOTE_HOST:-}"
+PORT="${REMOTE_PORT:-22}"
+ADMIN="${REMOTE_ADMIN:-}"
+KEY="${REMOTE_KEY:-$HOME/.ssh/id_ed25519}"
+TUNNEL_HOST="${REMOTE_TUNNEL:-}"
+TAILNET_HOST="${REMOTE_TAILNET:-}"
+JOBS="${REMOTE_JOBS:-10}"
+PROBE_PORTS="${REMOTE_PROBE_PORTS:-3000 5432 8080}"
+MACHINE="${REMOTE_MACHINE:-remote-gpu-pc}"
+ROUTE="${ENV_ROUTE:-${REMOTE_ROUTE:-auto}}"
+ACCOUNT=foldlab
+KEYS_FILE="$HERE/authorized_keys"   # who may log in; machine-specific, not in git
+KNOWN_HOSTS="$HERE/known_hosts"     # the remote's identity, so nobody can pose as it; not in git
+ALIAS=foldlab-remote
+REMOTE_DIR=protein-folding-lab
+UV=/opt/homebrew/bin/uv
+
+die()  { printf '\033[31m✗ %s\033[0m\n' "$*" >&2; exit 1; }
+step() { printf '\n\033[1m▸ %s\033[0m\n' "$*"; }
+
+need_host()  { [[ -n "$HOST" ]]  || die "Set REMOTE_HOST in $HERE/remote.env (copy remote.env.example)."; }
+need_admin() { need_host; [[ -n "$ADMIN" ]] || die "Set REMOTE_ADMIN in $HERE/remote.env (copy remote.env.example)."; }
+need_keys()  { [[ -s "$KEYS_FILE" ]] || die "No keys yet. Put your public key in $KEYS_FILE as one line: <type> <key> <name>"; }
+
+# --- how to get there ----------------------------------------------------------------------------
+# On the local network, straight there. Anywhere else, through the Cloudflare Tunnel if there is
+# one. Failing that, and only for someone on the tailnet with the administrator's login: hop
+# through Tailscale's SSH and reach the machine's own SSH from the inside.
+route() {
+  case "$ROUTE" in
+    lan|tunnel|tailnet) echo "$ROUTE" ;;
+    auto)
+      if [[ -n "$HOST" ]] && nc -z -G 1 "$HOST" "$PORT" >/dev/null 2>&1; then echo lan
+      elif [[ -n "$TUNNEL_HOST" ]]; then echo tunnel
+      elif [[ -n "$TAILNET_HOST" ]] && nc -z -G 2 "$TAILNET_HOST" 22 >/dev/null 2>&1; then echo tailnet
+      else echo lan; fi ;;
+    *) die "REMOTE_ROUTE must be auto, lan, tunnel or tailnet" ;;
+  esac
+}
+
+# ssh_config <route> <key path> <known_hosts path> <cloudflared command>
+ssh_config() {
+  echo "Host $ALIAS"
+  if [[ "$1" == tunnel ]]; then
+    [[ -n "$TUNNEL_HOST" ]] || die "No tunnel yet. Run: remote tunnel-install <hostname>"
+    echo "    HostName $TUNNEL_HOST"
+    echo "    ProxyCommand $4 access ssh --hostname %h"
+  elif [[ "$1" == tailnet ]]; then
+    [[ -n "$TAILNET_HOST" && -n "$ADMIN" ]] || die "The tailnet route needs REMOTE_TAILNET and REMOTE_ADMIN."
+    echo "    HostName 127.0.0.1"
+    echo "    ProxyJump $ADMIN@$TAILNET_HOST"
+  else
+    need_host
+    echo "    HostName $HOST"
+    echo "    Port $PORT"
+  fi
+  cat <<EOF
+    User $ACCOUNT
+    IdentityFile $2
+    IdentitiesOnly yes
+    ForwardAgent no
+    ServerAliveInterval 30
+    HostKeyAlias $ALIAS
+    UserKnownHostsFile $3
+    StrictHostKeyChecking yes
+EOF
+}
+
+SSH_CONFIG=""
+VIA=""
+connect() {   # prepares $SSH_CONFIG for guest() and push()
+  [[ -n "$SSH_CONFIG" ]] && return
+  [[ -s "$KNOWN_HOSTS" ]] || die "No $KNOWN_HOSTS yet. See 'One-time setup' in $HERE/README.md."
+  local cf=cloudflared
+  VIA="$(route)"
+  if [[ "$VIA" == tunnel ]]; then
+    cf="$(command -v cloudflared)" || die "Outside the local network you need cloudflared: brew install cloudflared"
+  fi
+  SSH_CONFIG="$(mktemp)"
+  trap 'rm -f "$SSH_CONFIG"' EXIT
+  ssh_config "$VIA" "$KEY" "$KNOWN_HOSTS" "$cf" >"$SSH_CONFIG"
+}
+guest() { connect; ssh -F "$SSH_CONFIG" "$ALIAS" "$@"; }
+push()  { connect; rsync -az -e "ssh -F $SSH_CONFIG" "$@"; }
+
+# --- administrator actions (local network only) --------------------------------------------------
+admin_ssh() { need_admin; ssh -p "$PORT" -o ConnectTimeout=8 "$@"; }
+
+stage_on_remote() {   # copies files to a fresh private folder on the remote, prints its path
+  local stage
+  stage="$(admin_ssh "$ADMIN@$HOST" 'mktemp -d /tmp/foldlab-setup.XXXXXX')" || true
+  [[ "$stage" == /tmp/foldlab-setup.* ]] || die "Cannot reach $ADMIN@$HOST. Administrator actions only work from the local network."
+  scp -q -P "$PORT" "$@" "$ADMIN@$HOST:$stage/"
+  echo "$stage"
+}
+
+# (The remote shell is zsh, where `status` is read-only: hence `rc`.)
+# Runs setup-guest.sh there with sudo. sudo asks for the administrator's password in this
+# terminal; it is never stored. The word KEYS in the arguments stands for the uploaded key list.
+admin_sudo() {
+  local stage
+  need_admin
+  need_keys
+  stage="$(stage_on_remote "$HERE/setup-guest.sh" "$KEYS_FILE")"
+  admin_ssh -t "$ADMIN@$HOST" \
+    "sudo bash $stage/setup-guest.sh ${*//KEYS/$stage/authorized_keys}; rc=\$?; rm -r $stage; exit \$rc"
+}
+
+# Runs setup-tunnel.sh there as the administrator's own user (no sudo).
+admin_tunnel() {
+  local stage
+  stage="$(stage_on_remote "$HERE/setup-tunnel.sh")"
+  admin_ssh -t "$ADMIN@$HOST" "bash $stage/setup-tunnel.sh $*; rc=\$?; rm -r $stage; exit \$rc"
+}
+
+# The address guests use right now, read from the remote.
+tunnel_address() {
+  local stage address
+  stage="$(stage_on_remote "$HERE/setup-tunnel.sh")"
+  address="$(admin_ssh "$ADMIN@$HOST" "bash $stage/setup-tunnel.sh address; rm -r $stage")"
+  echo "$address"
+}
+
+save_tunnel() {   # save_tunnel <hostname or empty>
+  touch "$HERE/remote.env"
+  grep -v '^REMOTE_TUNNEL=' "$HERE/remote.env" >"$HERE/remote.env.tmp" || true
+  [[ -z "$1" ]] || echo "REMOTE_TUNNEL=$1" >>"$HERE/remote.env.tmp"
+  mv "$HERE/remote.env.tmp" "$HERE/remote.env"
+}
+
+has_name()   { [[ -f "$KEYS_FILE" ]] && awk -v n="$1" '$3 == n {found=1} END {exit !found}' "$KEYS_FILE"; }
+valid_name() { [[ "$1" =~ ^[a-z0-9][a-z0-9._-]{1,30}$ ]] || die "Names are lowercase letters, digits, dot, dash: got '$1'"; }
+
+case "${1:-}" in
+  # --- access -------------------------------------------------------------------------------------
+  admin-install)
+    need_admin
+    step "Creating the guest account on $HOST (you will be asked for $ADMIN's password)"
+    admin_sudo install KEYS
+    ;;
+
+  admin-check)
+    admin_sudo check
+    ;;
+
+  admin-uninstall)
+    [[ -z "${2:-}" || "$2" == --delete-account ]] || die "Usage: remote admin-uninstall [--delete-account]"
+    [[ -z "$TUNNEL_HOST" ]] || die "Remove the tunnel first: remote tunnel-uninstall"
+    need_admin
+    step "Removing guest access from $HOST${2:+ and deleting the account with all its files}"
+    admin_sudo uninstall "${2:-}"
+    ;;
+
+  grant)
+    pub="${2:?Usage: remote grant <key.pub> <name>}"; name="${3:?Usage: remote grant <key.pub> <name>}"
+    valid_name "$name"
+    [[ -r "$pub" ]] || die "Cannot read $pub"
+    grep -q "PRIVATE KEY" "$pub" && die "That is a private key. Ask for the .pub file instead."
+    [[ "$(grep -c . "$pub")" -eq 1 ]] || die "$pub must hold exactly one key"
+    ssh-keygen -l -f "$pub" >/dev/null 2>&1 || die "$pub is not a public key"
+    has_name "$name" && die "'$name' already has access. Revoke first to replace their key."
+    awk -v n="$name" '{print $1, $2, n}' "$pub" >>"$KEYS_FILE"
+    step "Granting access to $name"
+    admin_sudo keys KEYS
+    ;;
+
+  invite)
+    name="${2:?Usage: remote invite <name>}"
+    valid_name "$name"
+    has_name "$name" && die "'$name' already has access."
+    [[ -s "$KNOWN_HOSTS" ]] || die "No $KNOWN_HOSTS yet. See 'One-time setup' in $HERE/README.md."
+    dir="$HERE/invites/$name"
+    mkdir -p "$dir" && chmod 700 "$dir"
+    ssh-keygen -q -t ed25519 -N "" -C "$name" -f "$dir/foldlab_$name"
+    cp "$KNOWN_HOSTS" "$dir/foldlab_known_hosts"
+    if [[ -n "$TUNNEL_HOST" ]]; then via=tunnel; else via=lan; fi
+    ssh_config "$via" "~/.ssh/foldlab_$name" "~/.ssh/foldlab_known_hosts" cloudflared >"$dir/config"
+    {
+      echo "Acceso a la PC remota con GPU para correr predicciones de estructura (cuenta compartida \"$ACCOUNT\")."
+      echo
+      if [[ "$via" == tunnel ]]; then
+        echo "0. Instala cloudflared, el programa que lleva la conexión hasta la máquina:"
+        echo "     macOS:    brew install cloudflared"
+        echo "     Windows:  winget install Cloudflare.cloudflared"
+        echo "     Linux:    https://pkg.cloudflare.com"
+      else
+        echo "0. Esta configuración solo funciona conectado a la misma red local."
+      fi
+      cat <<EOF
+1. Copia tu llave y la identidad de la máquina a tu carpeta de SSH:
+     mkdir -p ~/.ssh
+     cp foldlab_$name foldlab_known_hosts ~/.ssh/
+     chmod 600 ~/.ssh/foldlab_$name
+2. Agrega el contenido del archivo "config" al final de ~/.ssh/config
+3. Entra:
+     ssh $ALIAS
+
+La llave es personal: no la compartas. Si la pierdes o cambias de computadora, avisa para
+revocarla y crear otra. La cuenta puede usar internet, pero no ve los demás servicios de la
+máquina ni la red local, y todos los invitados comparten la misma carpeta.
+EOF
+    } >"$dir/LEEME.txt"
+    cat "$dir/foldlab_$name.pub" >>"$KEYS_FILE"
+    step "Granting access to $name"
+    admin_sudo keys KEYS
+    echo
+    echo "Send $name the folder $dir. The private key in it has no passphrase:"
+    echo "use a channel you trust, and delete your copy afterwards."
+    ;;
+
+  revoke)
+    name="${2:?Usage: remote revoke <name>}"
+    has_name "$name" || die "'$name' is not in the list. See: remote who"
+    [[ "$(grep -c . "$KEYS_FILE")" -gt 1 ]] || die "That is the last key; use 'remote admin-uninstall' instead."
+    awk -v n="$name" '$3 != n' "$KEYS_FILE" >"$KEYS_FILE.tmp" && mv "$KEYS_FILE.tmp" "$KEYS_FILE"
+    step "Revoking $name"
+    admin_sudo keys KEYS
+    echo "Sessions $name already had open stay open until they end."
+    ;;
+
+  who)
+    need_keys
+    ssh-keygen -l -f "$KEYS_FILE" | awk '{print $3 "\t" $2}'
+    ;;
+
+  # --- tunnel -------------------------------------------------------------------------------------
+  tunnel-install)
+    kind="${2:-quick}"
+    need_admin
+    step "Opening a Cloudflare Tunnel from $HOST ($kind)"
+    admin_tunnel install "$kind"
+    now="$(tunnel_address)"
+    [[ -n "$now" ]] || die "The tunnel is up but its address could not be read. Try: remote tunnel-status"
+    save_tunnel "$now"
+    echo "Saved $now in infra/remote-gpu-pc/remote.env. Test it from here with:"
+    echo "  REMOTE_ROUTE=tunnel infra/remote-gpu-pc/remote check"
+    ;;
+
+  tunnel-status)
+    admin_tunnel status
+    now="$(tunnel_address)"
+    if [[ -n "$now" && "$now" != "$TUNNEL_HOST" ]]; then
+      save_tunnel "$now"
+      echo
+      echo "The address changed${TUNNEL_HOST:+ (it was $TUNNEL_HOST)}. Saved the new one here."
+      echo "Tell your guests to replace the HostName line in their ~/.ssh/config with:"
+      echo "    HostName $now"
+    fi
+    ;;
+
+  tunnel-uninstall)
+    admin_tunnel uninstall
+    save_tunnel ""
+    ;;
+
+  # --- work ---------------------------------------------------------------------------------------
+  ssh-config)
+    ssh_config "$(route)" "$KEY" "$KNOWN_HOSTS" cloudflared
+    ;;
+
+  ssh)
+    shift
+    guest "$@"
+    ;;
+
+  check)
+    connect
+    step "Route: $VIA"
+    step "Logins that must be refused"
+    if ssh -F "$SSH_CONFIG" -o BatchMode=yes -o PubkeyAuthentication=no -o ConnectTimeout=15 "$ALIAS" true 2>/dev/null; then
+      die "The remote let $ACCOUNT in without a key."
+    fi
+    echo "  ✓ $ACCOUNT without a key"
+    if [[ "$VIA" == tunnel && -n "$ADMIN" ]]; then
+      # Your own key opens the administrator's account on the local network. Through the tunnel it must not.
+      if ssh -F "$SSH_CONFIG" -o BatchMode=yes -o User="$ADMIN" -o ConnectTimeout=15 "$ALIAS" true 2>/dev/null; then
+        die "The tunnel let $ADMIN in. Stop it now: remote tunnel-uninstall"
+      fi
+      echo "  ✓ $ADMIN through the tunnel, even with a key that works on the local network"
+    fi
+    step "From inside the guest account"
+    guest 'bash -s' -- "$PROBE_PORTS" <<'EOF'
+ok()  { printf '  \033[32m✓\033[0m %s\n' "$*"; }
+bad() { printf '  \033[31m✗\033[0m %s\n' "$*"; failed=1; }
+failed=0
+echo "  $(id)"
+for home in /Users/*; do
+  [[ "$home" == "$HOME" || "$home" == /Users/Shared ]] && continue
+  if ls "$home" >/dev/null 2>&1; then bad "can list $home"; else ok "cannot list $home"; fi
+done
+for port in $1; do
+  if nc -z -G 2 127.0.0.1 "$port" >/dev/null 2>&1; then bad "can connect to local port $port"; else ok "local port $port is blocked"; fi
+done
+if curl -fsS -m 15 -o /dev/null https://rest.uniprot.org/uniprotkb/P0CG48.fasta; then ok "internet works"; else bad "no internet"; fi
+exit $failed
+EOF
+    ;;
+
+  bootstrap)
+    step "Copying the project to the remote (~$ACCOUNT/$REMOTE_DIR)"
+    guest "mkdir -p $REMOTE_DIR/experiments"
+    push --exclude __pycache__ "$ROOT/foldlab" "$ROOT/pyproject.toml" "$ROOT/uv.lock" "$ROOT/.python-version" \
+      "$ALIAS:$REMOTE_DIR/"
+    step "Installing Python packages and the AlphaFold2 weights there (3.7 GB, once)"
+    guest "cd $REMOTE_DIR && $UV sync && $UV run python -c \"
+from pathlib import Path
+from colabfold.download import download_alphafold_params
+download_alphafold_params('alphafold2_ptm', Path('weights'))
+print('weights ready')\""
+    ;;
+
+  run)
+    exp="${2:?Usage: remote run <experiment folder> [step]}"; run_step="${3:-all}"
+    exp="${exp%/}"
+    [[ -f "$exp/experiment.toml" ]] || die "$exp has no experiment.toml"
+    rel="experiments/$(basename "$exp")"
+    step "Sending code and $rel"
+    push --exclude __pycache__ "$ROOT/foldlab" "$ROOT/pyproject.toml" "$ROOT/uv.lock" "$ROOT/.python-version" \
+      "$ALIAS:$REMOTE_DIR/"
+    push --exclude '*.pickle' --exclude _search "$exp/" "$ALIAS:$REMOTE_DIR/$rel/"
+
+    step "Running '$run_step' on the remote (Ctrl-C detaches; the run keeps going, rerun this command to reattach)"
+    status=0
+    guest 'bash -s' -- "$REMOTE_DIR" "$rel" "$run_step" "$UV" "$JOBS" "$MACHINE" <<'EOF' || status=$?
+set -uo pipefail
+cd "$HOME/$1"; exp="$2"; step="$3"; uv="$4"; jobs="$5"; machine="$6"
+log="$exp/remote.log"; pidfile="$exp/.remote.pid"; statusfile="$exp/.remote.status"
+if [[ -f "$pidfile" ]] && kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+  echo "A run is already in progress here; showing its log."
+else
+  rm -f "$statusfile"
+  # nohup: survives a dropped connection. nice: yields the CPU to the machine's other work.
+  # PYTHONUNBUFFERED: lines reach the log as they are printed, so the stream below is live and in order.
+  # FOLDLAB_JOBS: one prediction keeps about 6 of 20 cores busy, so several run side by side.
+  # FOLDLAB_MACHINE: the name provenance.json records instead of the machine's real hostname.
+  nohup bash -c "PYTHONUNBUFFERED=1 FOLDLAB_JOBS='$jobs' FOLDLAB_MACHINE='$machine' nice -n 10 '$uv' run python -m foldlab '$step' '$exp'; echo \$? > '$statusfile'" >"$log" 2>&1 &
+  echo $! >"$pidfile"
+fi
+pid="$(cat "$pidfile")"
+tail -n +1 -f "$log" & tailpid=$!
+trap 'kill $tailpid 2>/dev/null' EXIT
+while kill -0 "$pid" 2>/dev/null; do sleep 3; done
+sleep 1
+rm -f "$pidfile"
+exit "$(cat "$statusfile" 2>/dev/null || echo 1)"
+EOF
+
+    step "Bringing the results back"
+    push --exclude '*.pickle' --exclude '.remote.*' "$ALIAS:$REMOTE_DIR/$rel/" "$exp/"
+    [[ $status -eq 0 ]] || die "The run on the remote failed (exit $status). See $exp/remote.log"
+    echo "Done. Results are in $exp/results"
+    ;;
+
+  *)
+    sed -n '2,32p' "$0" | sed 's/^# \{0,1\}//'
+    exit 1
+    ;;
+esac

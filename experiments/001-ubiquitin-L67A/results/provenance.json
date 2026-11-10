@@ -1,0 +1,28 @@
+{
+  "experiment": "001-ubiquitin-L67A",
+  "recorded_utc": "2026-11-09T23:04:58+00:00",
+  "software": {
+    "colabfold": "1.6.3",
+    "alphafold-colabfold": "2.3.20",
+    "jax": "0.11.2",
+    "python": "3.12.16",
+    "platform": "macOS-26.4.1-arm64-arm-64bit"
+  },
+  "weights": "alphafold_params_2021-07-14 (AlphaFold2-ptm)",
+  "settings": {
+    "model_type": "alphafold2_ptm",
+    "msa_mode": "mmseqs2_uniref_env",
+    "num_models": 5,
+    "num_recycle": 3,
+    "num_seeds": 2,
+    "random_seed": 0
+  },
+  "inputs_sha256": {
+    "msa/wt.a3m": "91df444d5eb1acf30c9bde7f43495f1191e8452191924c178e2e6161a056a049",
+    "msa/L67A.a3m": "d8435699431f8624a56e08541b8973cc74f7203c9aa5160e06a2e963ecee6525"
+  },
+  "seconds_per_variant": {
+    "wt": 1243.1,
+    "L67A": 1198.5
+  }
+}

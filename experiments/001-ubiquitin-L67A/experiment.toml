@@ -1,0 +1,47 @@
+# Everything that defines this experiment lives in this file.
+# To start a new experiment: copy the folder, edit this file, run the pipeline.
+
+[experiment]
+id = "001-ubiquitin-L67A"
+question = "Does replacing the buried core leucine 67 of human ubiquitin with alanine change the structure or the confidence that AlphaFold2 predicts?"
+
+[protein]
+name = "Ubiquitin (human)"
+uniprot = "P0CG48"      # Polyubiquitin-C: nine ubiquitin copies in a row
+residues = [1, 76]      # we keep only the first copy, the 76-residue ubiquitin
+
+[reference]
+# An experimentally solved structure of the same protein. It is the ground
+# truth the wild-type prediction is checked against (positive control).
+pdb = "1UBQ"            # X-ray crystal structure, 1.8 Å
+chain = "A"
+
+[variants]
+# name = list of point mutations, written <original><position><new>.
+# Exactly one variant must have no mutations: that is the baseline.
+wt = []
+L67A = ["L67A"]
+
+[prediction]
+# Identical for every variant. Changing any of these between variants would
+# make the comparison meaningless.
+model_type = "alphafold2_ptm"
+msa_mode = "mmseqs2_uniref_env"
+num_models = 5          # AlphaFold2 ships five independently trained networks
+num_recycle = 3         # how many times the network refines its own answer
+num_seeds = 2           # repeats with different random seeds -> the noise floor
+random_seed = 0
+
+[analysis]
+# RMSD is computed over the folded domain only. Residues 73-76 are a flexible
+# tail that wags around even in experiments, so it would only add noise.
+core_residues = [1, 72]
+neighbor_cutoff = 6.0   # Å; residues this close to the mutated one are "local"
+
+[analysis.functional_sites]
+# Known functional residues of ubiquitin, for "how far is the mutation from
+# anything that matters?".
+"Ile44 hydrophobic patch (binds most partners)" = [8, 44, 68, 70]
+"Lys48 (chain linkage: degradation signal)" = [48]
+"Lys63 (chain linkage: signalling)" = [63]
+"Gly76 C-terminus (attaches to substrates)" = [76]

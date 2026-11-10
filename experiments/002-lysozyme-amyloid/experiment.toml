@@ -1,0 +1,54 @@
+# The student-project experiment: two disease mutations whose real structures are known.
+# Question, hypotheses and decision rules are in README.md, written before the run.
+
+[experiment]
+id = "002-lysozyme-amyloid"
+question = "Two mutations of human lysozyme cause hereditary amyloidosis. Crystallography shows that one (D67H) moves two loops by several ångströms and the other (I56T) moves almost nothing. Does AlphaFold2 predict that difference?"
+
+[protein]
+name = "Lysozyme C (human)"
+uniprot = "P61626"
+# The UniProt entry is the precursor: residues 1-18 are a signal peptide that is cut
+# off. The mature enzyme, the one in every crystal structure, is residues 19-148.
+residues = [19, 148]
+
+[reference]
+pdb = "1LZ1"            # wild-type human lysozyme, X-ray, 1.5 Å
+chain = "A"
+# 1LZ1 numbers the mature enzyme from 1. UniProt numbers the precursor.
+# mature residue n = UniProt residue n + 18
+numbering_offset = 18
+
+# Crystal structures of the mutants themselves. This is what experiment 001 lacked:
+# an experimental answer to compare each mutant prediction with.
+[reference.variants]
+I56T = { pdb = "1LOZ", chain = "A" }
+D67H = { pdb = "1LYY", chain = "A" }
+
+[variants]
+# The literature names these mutations in mature numbering (I56T, D67H).
+# The pipeline uses UniProt numbering, hence +18.
+wt = []
+I56T = ["I74T"]
+D67H = ["D85H"]
+
+[prediction]
+model_type = "alphafold2_ptm"
+msa_mode = "mmseqs2_uniref_env"
+num_models = 5
+num_recycle = 3
+num_seeds = 2
+random_seed = 0
+
+[analysis]
+core_residues = [19, 148]
+neighbor_cutoff = 6.0
+# Lesson from experiment 001: "larger than seed noise" is not the same as "large enough to
+# matter". Here an effect must also exceed the typical difference between two of AlphaFold2's
+# own networks.
+minimum_effect = "model_noise"
+# A residue "moves" in the experiment if its Cα shifts by more than this between the crystals.
+moved_threshold = 2.0
+
+[analysis.functional_sites]
+"Catalytic Glu35 and Asp53 (mature numbering)" = [53, 71]
