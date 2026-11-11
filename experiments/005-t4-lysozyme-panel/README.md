@@ -1,6 +1,6 @@
 # Experiment 005: from one case to a rate
 
-**Status: proposed, not run.** This is the protocol. The selection rule, hypotheses
+**Status: prepared, not run (2026-11-10).** The PDB has been surveyed, the rule has chosen the panel, and structures and alignment are in place. Nothing has been predicted. This is the protocol. The selection rule, hypotheses
 and decision rules are fixed here before any prediction is made.
 
 ## Question
@@ -35,7 +35,9 @@ of it.
 | ... of which single mutants of the standard laboratory background | 232 structures, 156 different mutations at 64 positions |
 | Resolution of those | 1.0 to 2.5 Å, median 1.8 |
 
-The full table is in [selection/pilot-survey.csv](selection/pilot-survey.csv).
+These figures are from the pilot survey made for the proposal. The survey the
+experiment itself ran, with every structure and the reason each was kept or left
+out, is [selection/survey.csv](selection/survey.csv).
 
 **Same crystal form matters.** How molecules pack in a crystal can itself bend a
 protein. Because all 232 structures share one crystal form, a difference between
@@ -85,14 +87,27 @@ Applied to the survey table, in this order, before any prediction:
    0.5 Å at the nearest residue position, without repeats. This pairs every mover
    with a mutation in the same part of the protein that did not move anything.
 
-From the pilot table, rules 1-5 are expected to leave about five movers: L99G,
-V111M, V111I, L84A and V103M (A129W fails on resolution; L118C and I9C carry spin
-labels). L99G's structure contains hexanediol and may fall to rule 3. The final
-list is whatever the rule gives when it is run inside the experiment.
+### What the rule chose
 
-A pairing the rule is likely to produce is worth noticing in advance: V111M and
-V111I move the backbone by about 3 Å, while V111A, at the same position, moves it
-by 0.4 Å.
+Run on 2026-11-10, before any prediction. Of 169 single mutations with a structure,
+135 qualify. The panel is in [selection/panel.csv](selection/panel.csv):
+
+| Mover | Crystal | Largest Cα shift | Paired non-mover | Crystal | Largest Cα shift |
+|---|---|---|---|---|---|
+| V111M | 1CV1 | 3.00 Å | V111A | 235L | 0.38 Å |
+| V111I | 2L78 | 2.77 Å | T109D | 1L62 | 0.24 Å |
+| L84A | 247L | 2.29 Å | A82S | 123L | 0.24 Å |
+| V103M | 1CUQ | 1.57 Å | M102K | 1L54 | 0.35 Å |
+
+Four movers, not six: that is all the rule found. Larger movers exist and were left
+out for stated reasons: L118C and I9C carry a spin label, L99G has hexanediol bound,
+A129W is at 2.5 Å resolution, and several others are in a different crystal form or
+have more than one molecule in the crystal. Every one is listed with its reason in
+the survey table.
+
+One pairing is exactly the kind of contrast this experiment is for: at position 111,
+methionine and isoleucine move the backbone by about 3 Å and alanine moves it by
+0.4 Å.
 
 ## Hypotheses
 
@@ -115,9 +130,9 @@ measured as in experiment 002:
 2. A non-mover is a **false alarm** if any fold-level metric passes the
    effect-against-noise rule of 002 (above seed noise and above the difference
    between networks) with a largest predicted shift over 1.1 Å.
-3. H3 holds if at most one mover is captured. It fails if at least four of six
-   (or two thirds of however many there are) are captured. Anything between is
-   reported as mixed.
+3. H3 holds if at most one mover is captured. It fails if at least two thirds of
+   the movers are captured (with four movers: three). Anything between is reported
+   as mixed.
 4. H2 holds if at most one non-mover is a false alarm.
 
 Also reported, without a verdict attached: a plot of predicted against
@@ -132,73 +147,35 @@ between them.
    structure as its own reference; the eight other WT\* structures for the
    experimental noise floor.
 3. `msa`: one search for WT\*.
-4. `predict`: WT\* and about 12 mutants, 5 networks x 2 seeds, no templates.
-   About 130 predictions of 164 residues.
+4. `predict`: WT\* and the 8 mutants, 5 networks x 2 seeds, no templates.
+   90 predictions of 164 residues.
 5. `analyze`, `report`: as in 002, for every mutant, plus the panel summary.
 
-## Planned `experiment.toml`
+## What is in place
 
-```toml
-[experiment]
-id = "005-t4-lysozyme-panel"
-question = "Across mutations with known crystal structures, how often does AlphaFold2's prediction move when the experiment moves?"
+Settings: [experiment.toml](experiment.toml).
 
-[protein]
-name = "T4 lysozyme (cysteine-free laboratory background, WT*)"
-uniprot = "P00720"
-residues = [1, 164]
-# The protein in the crystals is not the UniProt sequence.
-background = ["R12G", "I137R", "C54T", "C97A"]
+| Piece | Where |
+|---|---|
+| `background` mutations applied before the variants | `foldlab/config.py`, `prepare.py` |
+| The `select` step: survey the PDB, apply the rule, write the panel | `foldlab/select.py` |
+| Experimental noise floor from replicate crystal structures | `foldlab/analyze.py` |
+| Panel summary, table and figure | `foldlab/analyze.py`, `report.py` |
 
-[reference]
-pdb = "1L63"                # WT*, 1.75 Å
-chain = "A"
-# Other crystal structures of the identical protein: the experimental noise floor.
-replicates = ["1C6P", "1C6Q", "1C6T", "1LW9", "219L", "5VNR", "6U0B", "6U0C"]
+No new software. Tested so far: the panel summary on experiment 002 treated as a
+panel of two. Not yet run on this panel.
 
-[selection]
-space_group = "P 32 2 1"
-max_resolution = 2.1
-allowed_bound_molecules = ["CL", "K", "NA", "PO4", "SO4", "BME", "HED"]
-mover_threshold = 1.5       # Å, largest Cα shift
-non_mover_threshold = 0.5
-max_movers = 6
+To run it:
 
-# [variants] and [reference.variants] are written by the `select` step.
-
-[prediction]
-model_type = "alphafold2_ptm"
-msa_mode = "mmseqs2_uniref_env"
-num_models = 5
-num_recycle = 3
-num_seeds = 2
-random_seed = 0
-
-[analysis]
-core_residues = [1, 162]    # 163-164 are disordered in most structures
-neighbor_cutoff = 6.0
-minimum_effect = "model_noise"
-moved_threshold = 1.0
+```bash
+infra/remote-gpu-pc/remote run experiments/005-t4-lysozyme-panel
 ```
-
-## What has to be built
-
-| Piece | Where | Size |
-|---|---|---|
-| `background` mutations applied to the UniProt sequence before the variants | `foldlab/config.py`, `prepare.py` | small |
-| The `select` step: query the PDB, compare sequences, measure shifts, apply the rule, write the panel | new `foldlab/select.py`. A working draft exists from the pilot survey | medium |
-| Experimental noise floor from replicate structures | `foldlab/analyze.py` | small |
-| Panel summary: captured, false alarms, the predicted-against-experimental plot | `foldlab/analyze.py`, `report.py` | medium |
-
-Everything else, including scoring each mutant against its own crystal structure,
-was built for experiment 002. No new software. Downloads: about 250 PDB files,
-40 MB, for the survey.
 
 ## Cost
 
-About 130 predictions of 164 residues. Extrapolating from experiment 002 (130
-residues, a little under a minute each at ten at a time), roughly three hours on
-the remote machine. Not measured.
+90 predictions of 164 residues (nine sequences, five networks, two seeds).
+Extrapolating from experiment 002 (130 residues, a little under a minute each at
+ten at a time), roughly two hours on the remote machine. Not measured.
 
 ## Known before running
 
@@ -206,11 +183,11 @@ the remote machine. Not measured.
   around residues 108-113, next to the cavity that the well-known L99A mutation
   opens. The panel will show how AlphaFold2 handles that one flexible region more
   than how it handles movement in general.
-- **Few movers exist.** Five or six is all the rule is expected to find. The count
-  of captured movers will be out of a small number and should be read that way.
+- **Few movers exist.** The rule found four. The count of captured movers will be
+  out of four and should be read that way.
 - **All of these structures were in AlphaFold2's training data**, as in 002.
-- **Hexanediol and similar additives** sit on the border of rule 3. Whatever the
-  rule decides is recorded with the reason.
+- **Hexanediol and similar additives** sit on the border of rule 3. The rule
+  excluded them, which cost the largest clean mover, L99G (4.7 Å).
 - **Movement is not harm.** Stability was measured for most of these mutants and
   is a separate question, closer to experiment 003.
 

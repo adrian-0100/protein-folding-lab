@@ -1,0 +1,45 @@
+# Question, hypotheses, the selection rule and decision rules are in README.md, written before
+# anything was predicted.
+
+[experiment]
+id = "005-t4-lysozyme-panel"
+question = "Across mutations with known crystal structures, how often does AlphaFold2's prediction move when the experiment moves?"
+
+[protein]
+name = "T4 lysozyme (cysteine-free laboratory background, WT*)"
+uniprot = "P00720"
+residues = [1, 164]
+# The protein in the crystals is not the UniProt sequence: the laboratory strain differs at 12
+# and 137, and the two cysteines were replaced.
+background = ["R12G", "I137R", "C54T", "C97A"]
+
+[reference]
+pdb = "1L63"                # WT*, 1.75 Å
+chain = "A"
+# Other crystal structures of the identical protein: the experimental noise floor.
+replicates = ["1C6P", "1C6Q", "1C6T", "1LW9", "219L", "5VNR", "6U0B", "6U0C"]
+
+[selection]
+# The rule that chooses the panel. Applied by `select` to experimental structures only.
+space_group = "P 32 2 1"
+max_resolution = 2.1
+allowed_bound_molecules = ["CL", "K", "NA", "PO4", "SO4", "BME", "HED"]
+mover_threshold = 1.5       # Å, largest Cα shift from the reference crystal
+non_mover_threshold = 0.5
+max_movers = 6
+
+# The variants are the panel: written to selection/variants.json by `select`.
+
+[prediction]
+model_type = "alphafold2_ptm"
+msa_mode = "mmseqs2_uniref_env"
+num_models = 5
+num_recycle = 3
+num_seeds = 2
+random_seed = 0
+
+[analysis]
+core_residues = [1, 162]    # 163-164 are disordered in most structures
+neighbor_cutoff = 6.0
+minimum_effect = "model_noise"
+moved_threshold = 1.0

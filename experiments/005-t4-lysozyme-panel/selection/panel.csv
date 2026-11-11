@@ -1,0 +1,9 @@
+mutation,pdb,resolution,bound_molecules,excluded_because,ca_rmsd,largest_shift,at_residue,residues_over_1A,position,role
+V111M,1CV1,2.1,CL HED,,0.408,3.0,112.0,5.0,111,mover
+V111I,2L78,2.0,BME CL,,0.363,2.77,112.0,4.0,111,mover
+L84A,247L,1.75,CL HED,,0.352,2.29,112.0,4.0,84,mover
+V103M,1CUQ,2.05,CL HED,,0.304,1.57,112.0,5.0,103,mover
+T109D,1L62,1.7,BME CL,,0.071,0.24,110.0,0.0,109,non-mover
+A82S,123L,1.8,BME CL,,0.096,0.24,162.0,0.0,82,non-mover
+M102K,1L54,1.9,,,0.137,0.35,113.0,0.0,102,non-mover
+V111A,235L,1.9,CL HED,,0.122,0.38,111.0,0.0,111,non-mover

@@ -1,6 +1,6 @@
 # Experiment 003: a tool built for the question
 
-**Status: proposed, not run.** This is the protocol. Hypotheses and decision rules
+**Status: prepared, not run (2026-11-10).** The measurements are downloaded, the sample of 40 mutants is drawn, the alignment is built and the language model is installed on the remote machine. No score has been computed and no structure predicted. This is the protocol. Hypotheses and decision rules
 are fixed here before any score is computed.
 
 ## Question
@@ -121,64 +121,30 @@ figure for this particular scan has deliberately not been looked up.
 6. `report`: one scatter plot per score (score against measured growth), one bar
    chart of AUC with the ceiling marked, and a table of where L67A and K63A fall.
 
-## Planned `experiment.toml`
+## What is in place
 
-```toml
-[experiment]
-id = "003-ubiquitin-variant-effect"
-question = "Which score agrees with the measured effect of ubiquitin's mutations: AlphaFold2's confidence, or scores built from evolution?"
+Settings: [experiment.toml](experiment.toml). The sample that was drawn, with the
+seed and the method: [selection/variants.json](selection/variants.json).
 
-[protein]
-name = "Ubiquitin (yeast)"
-uniprot = "P0CH08"          # ubiquitin fused to ribosomal protein L40
-residues = [1, 76]
+| Piece | Where |
+|---|---|
+| Reference check that accepts declared differences | `foldlab/prepare.py` |
+| Loader for a ProteinGym scan, and the random draw | `foldlab/truth.py` |
+| The `score` step: BLOSUM62, alignment log-odds, ESM-2 | `foldlab/score.py` |
+| Rank correlation and AUC against the scan, figures, report | `foldlab/agreement.py` |
 
-[reference]
-pdb = "1UBQ"                # human ubiquitin
-chain = "A"
-allowed_differences = ["S19P", "D24E", "S28A"]   # yeast -> human
+The language model needs `torch` and `transformers`, kept optional so the base
+pipeline stays light: `uv sync --extra plm`. They and the ESM-2 weights (2.4 GB)
+are installed on the remote machine, where the model runs on the GPU.
 
-[truth]
-source = "ProteinGym v1.3"
-assay = "RL40A_YEAST_Roscoe_2013"
-ceiling_assay = "RL40A_YEAST_Mavor_2016"
+Tested so far: the scoring and analysis code on made-up measurements, and the
+language model on three lysozyme variants. Not yet run on this experiment's data.
 
-[scores]
-blosum62 = true
-alignment_log_odds = true
-language_model = "facebook/esm2_t33_650M_UR50D"
+To run it:
 
-[subset]
-harmful = 20
-tolerated = 20
-positions = [2, 72]
-random_seed = 0
-always_include = ["L67A", "K63A"]
-
-[prediction]
-model_type = "alphafold2_ptm"
-msa_mode = "mmseqs2_uniref_env"
-num_models = 5
-num_recycle = 3
-num_seeds = 1
-random_seed = 0
+```bash
+infra/remote-gpu-pc/remote run experiments/003-ubiquitin-variant-effect
 ```
-
-## What has to be built
-
-| Piece | Where | Size |
-|---|---|---|
-| Reference check that accepts declared differences | `foldlab/prepare.py`, `config.py` | small |
-| Loader for a ProteinGym assay file | new `foldlab/truth.py` | small |
-| The `score` step: BLOSUM62, alignment log-odds, ESM-2 masked scoring | new `foldlab/score.py` | medium |
-| Subset draw, written back into the experiment folder | `foldlab/score.py` | small |
-| Spearman and AUC, on all mutants and on the subset | `foldlab/analyze.py` (a second analysis path) | medium |
-| Scatter plots and the AUC chart | `foldlab/report.py` | medium |
-
-New software, as an optional install so the base pipeline stays light: `torch` and
-`transformers` (checked: they resolve cleanly next to the current environment, 31
-packages, about 1 GB). New downloads: ProteinGym substitutions (43 MB) and the
-ESM-2 weights (about 2.6 GB, once).
 
 ## Cost
 

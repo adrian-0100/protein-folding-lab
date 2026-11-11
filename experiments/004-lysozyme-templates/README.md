@@ -1,6 +1,6 @@
 # Experiment 004: what if AlphaFold2 is shown the answer?
 
-**Status: proposed, not run.** This is the protocol. Hypotheses and decision rules
+**Status: prepared, not run (2026-11-10).** The two template structures are fetched and the alignment of experiment 002 is copied over. Nothing has been predicted. This is the protocol. Hypotheses and decision rules
 are fixed here before any prediction is made.
 
 ## Question
@@ -96,70 +96,30 @@ that do not (the measure used in 002):
 As experiment 002, same alignment files, same seeds. New in the pipeline: a
 template setting per variant, and a choice of which networks to run.
 
-## Planned `experiment.toml`
+## What is in place
 
-```toml
-[experiment]
-id = "004-lysozyme-templates"
-question = "Handed a known structure to start from, does AlphaFold2's prediction follow the sequence or the structure?"
+Settings: [experiment.toml](experiment.toml). One refinement since the proposal:
+all seven template conditions are measured against the D67H crystal, including the
+wild-type sequence with a search or with 1LZ1, so every cell of the table gets a
+reading.
 
-[protein]
-name = "Lysozyme C (human)"
-uniprot = "P61626"
-residues = [19, 148]
+| Piece | Where |
+|---|---|
+| Variants written as tables, with an optional `templates` entry; `models = [1, 2]` | `foldlab/config.py` |
+| Templates passed to ColabFold, with a private copy of the template folder per process | `foldlab/predict.py` |
+| Copying 002's alignment and its template-free predictions | `foldlab/prepare.py`, `predict.py` |
+| A reading per prediction (which crystal its loops resemble) and the table | `foldlab/analyze.py`, `report.py` |
 
-[reference]
-pdb = "1LZ1"
-chain = "A"
-numbering_offset = 18
+No new software. Tested so far: the reading and the table on experiment 002's
+predictions (all "stays with the baseline crystal", as 002 found), and that
+ColabFold builds a template database from the 1LYY file. Not yet tested: an actual
+prediction with a template, which is the experiment.
 
-[variants]
-# name = mutations, and what the network is given as a template
-wt            = { mutations = [] }
-D67H          = { mutations = ["D85H"] }
-I56T          = { mutations = ["I74T"] }
-wt_search     = { mutations = [],       templates = "search" }
-D67H_search   = { mutations = ["D85H"], templates = "search" }
-I56T_search   = { mutations = ["I74T"], templates = "search" }
-wt_1LZ1       = { mutations = [],       templates = ["1LZ1"] }
-D67H_1LZ1     = { mutations = ["D85H"], templates = ["1LZ1"] }
-wt_1LYY       = { mutations = [],       templates = ["1LYY"] }
-D67H_1LYY     = { mutations = ["D85H"], templates = ["1LYY"] }
+To run it:
 
-[reference.variants]
-# every D67H condition is scored against the D67H crystal; wild-type ones too, for the control
-D67H = { pdb = "1LYY", chain = "A" }
-D67H_search = { pdb = "1LYY", chain = "A" }
-D67H_1LZ1 = { pdb = "1LYY", chain = "A" }
-D67H_1LYY = { pdb = "1LYY", chain = "A" }
-wt_1LYY = { pdb = "1LYY", chain = "A" }
-
-[prediction]
-model_type = "alphafold2_ptm"
-msa_mode = "mmseqs2_uniref_env"
-models = [1, 2]             # the two networks that read templates
-num_recycle = 3
-num_seeds = 2
-random_seed = 0
+```bash
+infra/remote-gpu-pc/remote run experiments/004-lysozyme-templates
 ```
-
-The three template-free variants are not recomputed: their predictions from
-networks 1 and 2 are copied from experiment 002.
-
-## What has to be built
-
-| Piece | Where | Size |
-|---|---|---|
-| Variants written as tables, with an optional `templates` entry | `foldlab/config.py` | small |
-| `models = [...]` in place of "the first N networks" | `foldlab/config.py`, `predict.py` | small |
-| Passing templates to ColabFold: `--templates` for search, plus `--custom-template-path` for chosen structures | `foldlab/predict.py` | small |
-| A private copy of the template folder for each process. ColabFold writes index files into it, and ten processes sharing one folder would collide | `foldlab/predict.py` | small |
-| Recording which templates the search picked | `foldlab/predict.py`, `provenance.json` | small |
-| A loops verdict per prediction, and the 2 by 2 table | `foldlab/analyze.py`, `report.py` | small |
-
-No new software. Checked: ColabFold accepts `.pdb` files as custom templates, and
-its template-search programs (`hhsearch`, `kalign`) are present and run on this
-kind of machine.
 
 ## Cost
 

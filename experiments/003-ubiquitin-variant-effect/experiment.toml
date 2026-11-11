@@ -1,0 +1,48 @@
+# Question, hypotheses and decision rules are in README.md, written before anything was computed.
+
+[experiment]
+id = "003-ubiquitin-variant-effect"
+question = "Which score agrees with the measured effect of ubiquitin's mutations: AlphaFold2's confidence, or scores built from evolution?"
+
+[protein]
+name = "Ubiquitin (yeast)"
+uniprot = "P0CH08"          # ubiquitin fused to ribosomal protein L40
+residues = [1, 76]          # the ubiquitin part
+
+[reference]
+pdb = "1UBQ"                # human ubiquitin: the best structure of a close relative
+chain = "A"
+# Yeast and human ubiquitin differ at three positions (written yeast -> human).
+allowed_differences = ["S19P", "D24E", "S28A"]
+
+[truth]
+# The laboratory measurement every score is compared with.
+source = "ProteinGym v1.3"
+assay = "RL40A_YEAST_Roscoe_2013"          # growth of yeast carrying each single mutant
+ceiling_assay = "RL40A_YEAST_Mavor_2016"   # an independent scan of the same protein
+
+[scores]
+blosum62 = true
+alignment_log_odds = true
+language_model = "facebook/esm2_t33_650M_UR50D"
+
+[subset]
+# Structure predictions are made for a random sample, drawn before anything is predicted.
+harmful = 20
+tolerated = 20
+positions = [2, 72]         # 73-76 is a floppy tail whatever the sequence
+random_seed = 0
+always_include = ["L67A", "K63A"]   # reported separately, not counted in the statistics
+
+# The variants are the sample: written to selection/variants.json by `prepare`.
+
+[prediction]
+model_type = "alphafold2_ptm"
+msa_mode = "mmseqs2_uniref_env"
+num_models = 5
+num_recycle = 3
+num_seeds = 1
+random_seed = 0
+
+[analysis]
+core_residues = [1, 72]

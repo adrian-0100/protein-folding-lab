@@ -1,0 +1,69 @@
+# Question, hypotheses and decision rules are in README.md, written before anything was predicted.
+
+[experiment]
+id = "004-lysozyme-templates"
+question = "Handed a known structure to start from, does AlphaFold2's prediction follow the sequence or the structure?"
+
+[protein]
+name = "Lysozyme C (human)"
+uniprot = "P61626"
+residues = [19, 148]
+
+[reference]
+pdb = "1LZ1"
+chain = "A"
+numbering_offset = 18
+
+[variants]
+# name = its mutations, and what the network is handed as a template.
+# Mutations are in UniProt numbering: D67H is D85H, I56T is I74T.
+wt          = { mutations = [] }
+D67H        = { mutations = ["D85H"] }
+I56T        = { mutations = ["I74T"] }
+wt_search   = { mutations = [],       templates = "search" }
+D67H_search = { mutations = ["D85H"], templates = "search" }
+I56T_search = { mutations = ["I74T"], templates = "search" }
+wt_1LZ1     = { mutations = [],       templates = ["1LZ1"] }
+D67H_1LZ1   = { mutations = ["D85H"], templates = ["1LZ1"] }
+wt_1LYY     = { mutations = [],       templates = ["1LYY"] }
+D67H_1LYY   = { mutations = ["D85H"], templates = ["1LYY"] }
+
+[reference.variants]
+# Every condition is measured against the D67H crystal: do its loops look like 1LYY or like 1LZ1?
+# That includes the wild-type sequence, which is the control.
+D67H        = { pdb = "1LYY", chain = "A" }
+D67H_search = { pdb = "1LYY", chain = "A" }
+D67H_1LZ1   = { pdb = "1LYY", chain = "A" }
+D67H_1LYY   = { pdb = "1LYY", chain = "A" }
+wt_search   = { pdb = "1LYY", chain = "A" }
+wt_1LZ1     = { pdb = "1LYY", chain = "A" }
+wt_1LYY     = { pdb = "1LYY", chain = "A" }
+
+[reuse]
+# Same proteins, same alignment and same seeds as experiment 002: its alignment is copied, and so
+# are its predictions for the three template-free variants.
+from = "../002-lysozyme-amyloid"
+variants = ["wt", "D67H", "I56T"]
+
+[prediction]
+model_type = "alphafold2_ptm"
+msa_mode = "mmseqs2_uniref_env"
+models = [1, 2]             # the only two of AlphaFold2's five networks that read templates
+num_recycle = 3
+num_seeds = 2
+random_seed = 0
+
+[analysis]
+core_residues = [19, 148]
+neighbor_cutoff = 6.0
+minimum_effect = "model_noise"
+moved_threshold = 2.0
+
+[analysis.loop_verdict]
+# Over the residues that move in the D67H crystal: a prediction "follows" a crystal if it is
+# nearer than `near` to it and farther than `far` from the other one.
+near = 1.5
+far = 3.0
+
+[analysis.functional_sites]
+"Catalytic Glu35 and Asp53 (mature numbering)" = [53, 71]

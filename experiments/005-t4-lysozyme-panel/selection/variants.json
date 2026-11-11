@@ -1,0 +1,64 @@
+{
+  "how": "foldlab select: single mutants of the baseline in P 32 2 1 from the PDB, rule in experiment.toml [selection]; see survey.csv and panel.csv",
+  "variants": {
+    "wt": [],
+    "V111M": [
+      "V111M"
+    ],
+    "V111I": [
+      "V111I"
+    ],
+    "L84A": [
+      "L84A"
+    ],
+    "V103M": [
+      "V103M"
+    ],
+    "T109D": [
+      "T109D"
+    ],
+    "A82S": [
+      "A82S"
+    ],
+    "M102K": [
+      "M102K"
+    ],
+    "V111A": [
+      "V111A"
+    ]
+  },
+  "references": {
+    "V111M": {
+      "pdb": "1CV1",
+      "chain": "A"
+    },
+    "V111I": {
+      "pdb": "2L78",
+      "chain": "A"
+    },
+    "L84A": {
+      "pdb": "247L",
+      "chain": "A"
+    },
+    "V103M": {
+      "pdb": "1CUQ",
+      "chain": "A"
+    },
+    "T109D": {
+      "pdb": "1L62",
+      "chain": "A"
+    },
+    "A82S": {
+      "pdb": "123L",
+      "chain": "A"
+    },
+    "M102K": {
+      "pdb": "1L54",
+      "chain": "A"
+    },
+    "V111A": {
+      "pdb": "235L",
+      "chain": "A"
+    }
+  }
+}
