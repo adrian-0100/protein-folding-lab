@@ -12,7 +12,7 @@ Two experiments are already run. Read this page first, then them, in order:
    mutations whose real structures are known. Does it predict the one that moves?
    (No.)
 
-Three more are written up and ready to run:
+Three more are prepared and ready to run, each with one command:
 [docs/next-experiments.md](docs/next-experiments.md).
 
 ## The idea in five minutes
@@ -71,7 +71,9 @@ uv sync
 uv run python -m foldlab all experiments/001-ubiquitin-L67A
 ```
 
-`all` runs the five steps in order. On a machine with many cores, put
+`all` runs every step that applies, in order. `ready` stops before the first
+computation: it fetches, chooses and checks everything an experiment needs and
+predicts nothing. On a machine with many cores, put
 `FOLDLAB_JOBS=10` in front to run ten predictions at a time; the results are
 identical, only sooner.
 
@@ -88,13 +90,17 @@ Then open, inside the experiment folder:
 ## What is in the box
 
 ```
-foldlab/                  the pipeline (about 700 lines of Python, meant to be read)
-  prepare.py   step 1     sequence from UniProt, reference structure from the PDB, one FASTA per variant
-  msa.py       step 2     one database search, one alignment per variant
-  predict.py   step 3     AlphaFold2 with identical settings for every variant; records versions and settings
-  analyze.py   step 4     confidence, structural difference, noise floor, conservation, burial
-  report.py    step 5     figures, 3D viewer, REPORT.md
+foldlab/                  the pipeline (about 2,300 lines of Python, meant to be read)
+  select.py               panel experiments only: choose the mutants by a written rule, from the PDB
+  prepare.py              sequence from UniProt, experimental structures and data, one FASTA per variant
+  msa.py                  one database search, one alignment per variant
+  score.py                variant-effect experiments only: sequence-based scores for every measured mutant
+  predict.py              AlphaFold2 with identical settings for every variant; records versions and settings
+  analyze.py              confidence, structural difference, noise floor, conservation, burial
+  agreement.py            variant-effect experiments: which score agrees with the laboratory
+  report.py               figures, 3D viewer, REPORT.md
   structure.py            geometry helpers: read a structure, overlay two, measure distances
+  truth.py                laboratory measurements (a ProteinGym scan) and the random draw from them
 experiments/
   001-ubiquitin-L67A/
     experiment.toml       the whole experiment as data: protein, mutation, settings
@@ -102,9 +108,13 @@ experiments/
     NOTEBOOK.md           lab notebook: what was done, what came out, what it means
     inputs/ reference/ msa/ predictions/ results/     produced by the pipeline
   002-lysozyme-amyloid/   the same layout; adds crystal structures of the mutants themselves
+  003-ubiquitin-variant-effect/   prepared, not run: scores against 1,195 measured mutants
+  004-lysozyme-templates/         prepared, not run: hand the network a structure to start from
+  005-t4-lysozyme-panel/          prepared, not run: eight mutants chosen by rule
 docs/
   concepts.md             glossary for someone who has never done this
   student-project.md      how this maps onto a sixth-semester biomedicine project
+  next-experiments.md     experiments 003-005: what they ask, what was prepared, how to run them
 infra/remote-gpu-pc/      run on the remote GPU PC: guest account setup, the `remote` command
 weights/                  AlphaFold2 parameters (3.7 GB, downloaded once, not in git)
 ```

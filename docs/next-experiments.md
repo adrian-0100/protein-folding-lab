@@ -1,8 +1,9 @@
 # The next three experiments
 
-A proposal. Nothing here has been run. Each experiment has its full protocol in
-its own folder, written the way 001 and 002 were: question, hypotheses and decision
-rules fixed before any result exists.
+**Prepared, not run.** Each experiment has its full protocol in its own folder,
+written the way 001 and 002 were: question, hypotheses and decision rules fixed
+before any result exists. As of 2026-11-10 everything they need is built, fetched
+and checked on the remote machine. What is left is to run them.
 
 ## Where we are
 
@@ -12,15 +13,15 @@ rules fixed before any result exists.
 | [002](../experiments/002-lysozyme-amyloid/NOTEBOOK.md) | Does it predict the loop movement that the D67H crystal of lysozyme shows? | No: it returns the wild-type structure, 5.8 Å off in the loops, with full confidence |
 
 Both say what AlphaFold2 does *not* do. They leave three questions, and each of
-the proposals answers one.
+the next experiments answers one.
 
-## The three proposals
+## The three experiments
 
-| | Question | In one line | New data | New software | Compute |
-|---|---|---|---|---|---|
-| [003](../experiments/003-ubiquitin-variant-effect/README.md) | If not AlphaFold2, then what? | Score all 1,195 measured ubiquitin mutants with three evolution-based scores and with AlphaFold2's confidence, and see which agrees with the laboratory | ProteinGym scan of ubiquitin, 43 MB | `torch`, `transformers`, ESM-2 weights (2.6 GB) | minutes on the laptop, plus 2.5 h remote |
-| [004](../experiments/004-lysozyme-templates/README.md) | Why did 002 fail? | Hand the network the D67H crystal as a starting hint and see whether the prediction moves, with the wild-type sequence as control | none | none | 30 min remote |
-| [005](../experiments/005-t4-lysozyme-panel/README.md) | Was 002 typical? | A panel of about twelve T4 lysozyme mutants with crystal structures, chosen by rule: how often does the prediction move when the experiment does? | about 250 PDB files, 40 MB | none | about 3 h remote |
+| | Question | In one line | Predictions to run | Estimate on the remote machine |
+|---|---|---|---|---|
+| [003](../experiments/003-ubiquitin-variant-effect/README.md) | If not AlphaFold2, then what? | Score all 1,195 measured ubiquitin mutants with three evolution-based scores, and a random 40 of them with AlphaFold2's confidence, and see which agrees with the laboratory | 215, of 76 residues | 2.5 h |
+| [004](../experiments/004-lysozyme-templates/README.md) | Why did 002 fail? | Hand the network the D67H crystal as a starting hint and see whether the prediction moves, with the wild-type sequence as control | 28, of 130 residues | 0.5 h |
+| [005](../experiments/005-t4-lysozyme-panel/README.md) | Was 002 typical? | Eight T4 lysozyme mutants with crystal structures, chosen by rule: how often does the prediction move when the experiment does? | 90, of 164 residues | about 2 h (extrapolated) |
 
 What each adds that the first two experiments did not have:
 
@@ -31,87 +32,73 @@ What each adds that the first two experiments did not have:
 - **005** is the first with enough cases to state a rate, and the first with an
   experimental noise floor (the same protein crystallised nine times).
 
-## Recommended order
+## Running them
 
-1. **004 first.** Half an hour of computing, no new downloads, and the smallest
-   code change. It also exercises two pipeline changes (variants as tables, choice
-   of networks) that the other two can build on.
-2. **003 second.** The most new code and the only new dependencies, but it is the
-   one with the most useful answer, and most of it runs on the laptop.
-3. **005 third, or leave it for the student.** It is the most work to run and the
-   easiest to hand over: the selection step, the panel table and the final count
-   are all things a sixth-semester student can do and defend. It is option 2 in
-   [the student guide](student-project.md).
+Each is one command, from the laptop. It sends the experiment to the remote
+machine, runs every remaining step there, and brings the results back.
 
-They are independent. Any one can be run without the others.
+```bash
+infra/remote-gpu-pc/remote run experiments/004-lysozyme-templates
+```
 
-## Everything needed
+```bash
+infra/remote-gpu-pc/remote run experiments/003-ubiquitin-variant-effect
+```
 
-### Already checked
+```bash
+infra/remote-gpu-pc/remote run experiments/005-t4-lysozyme-panel
+```
 
-| | Result |
-|---|---|
-| Ubiquitin scan in ProteinGym | Present: 1,195 single mutants, positions 2-76, labelled harmful or tolerated, includes L67A and K63A. A second independent scan of the same protein is there too |
-| It is yeast ubiquitin | Yes. Differs from human at positions 19, 24 and 28. UniProt P0CH08, residues 1-76 |
-| `torch` and `transformers` next to the current environment | Resolve cleanly (dry run: 31 packages) |
-| Template support in ColabFold | Works with `.pdb` files given by hand; only networks 1 and 2 read templates; the search programs run on this kind of machine |
-| T4 lysozyme mutant structures | 156 different single mutations with a crystal structure in one crystal form; 8 extra structures of the unmutated protein for a noise floor |
-| Human lysozyme variants in UniProt | Only three: I56T and D67H (disease) and T70N (listed with no disease). Too few for a variant-effect test, which is why 003 uses ubiquitin |
+Recommended order: 004 first (half an hour, and it exercises the template code),
+then 003, then 005. They are independent. About five hours in total, during which
+the remote machine's processor is fully used: agree each run with whoever else uses
+it, and prefer the evening.
 
-### To download
+After each run: read `results/REPORT.md`, then write the experiment's `NOTEBOOK.md`.
+The report gives numbers and verdicts by the pre-set rules; what they mean is
+written by a person.
 
-| What | Size | For |
-|---|---|---|
-| ProteinGym v1.3 substitutions archive | 43 MB | 003 |
-| `torch`, `transformers` and their dependencies | about 1 GB | 003 |
-| ESM-2 weights, `facebook/esm2_t33_650M_UR50D` | about 2.6 GB | 003 |
-| T4 lysozyme structures from the PDB | 40 MB | 005 |
-| Template search results | small, fetched by ColabFold | 004 |
+## What was prepared
 
-All free, all from the projects' own servers.
-
-### To build in the pipeline
-
-Listed once here; each protocol says where its pieces go.
-
-| Change | Needed by | Size |
-|---|---|---|
-| Variants written as tables, so a variant can carry settings besides its mutations | 004 | small |
-| Choice of networks (`models = [1, 2]`) | 004 | small |
-| Templates: search, or chosen structures, with a private template folder per process | 004 | small |
-| A loops verdict per prediction and a sequence-by-template table | 004 | small |
-| Reference check that accepts declared sequence differences | 003 | small |
-| Loader for a ProteinGym scan | 003 | small |
-| A `score` step: BLOSUM62, alignment log-odds, ESM-2 | 003 | medium |
-| A second analysis path: rank correlation and AUC against a scan | 003 | medium |
-| `background` mutations: the protein in the crystals is not always the UniProt sequence | 005 | small |
-| A `select` step: survey the PDB, apply a written rule, write the panel | 005 | medium (a working draft exists) |
-| Experimental noise floor from replicate crystal structures | 005 | small |
-| Panel summary across many mutants | 005 | medium |
-
-The pipeline is 1,360 lines today. All three together would add roughly half that
-again.
-
-### Computing
-
-| | Predictions | Residues | Estimate on the remote machine |
+| | 003 | 004 | 005 |
 |---|---|---|---|
-| 003 | 215 | 76 | 2.5 h (from 001's measured rate) |
-| 004 | 28 | 130 | 0.5 h (from 002's measured rate) |
-| 005 | about 130 | 164 | about 3 h (extrapolated, not measured) |
+| Sequence and reference structure checked | yeast ubiquitin against human 1UBQ, three declared differences | as in 002 | laboratory background WT\* against 1L63 |
+| Laboratory data | 1,195 measured mutants, plus a second independent scan | crystal of D67H (1LYY) | 8 mutant crystals, 8 replicate crystals of the unmutated protein |
+| Chosen by rule, before any prediction | 20 harmful + 20 tolerated mutants at random (seed 0), plus L67A and K63A | - | 4 movers and 4 paired non-movers out of 135 qualifying mutations |
+| Alignment | new search, 21,413 sequences | copied from 002 | new search, 4,326 sequences |
+| Extra software | ESM-2 language model, on the remote's GPU | none | none |
 
-About six hours in total, during which the remote machine's processor is fully
-used. Each run should be agreed with whoever else uses it, and is best started in
-the evening. The parts of 003 that do not need structure predictions run on the
-laptop.
+New steps in the pipeline: `select` (choose a panel by rule), `score` (sequence-based
+scores), and `ready`, which runs everything up to but not including the first
+computation. That is what was run for all three:
 
-### Decisions that are yours
+```bash
+uv run python -m foldlab ready experiments/<name>
+```
 
-1. **Which to run, and in what order.** The recommendation is above.
-2. **Whether 005 is ours or the student's.** If the student's, we stop at the
-   protocol and the pilot table that already exist.
-3. **Adding `torch` and 3.6 GB of downloads** to the laptop for 003.
-4. **When the remote machine can be used at full load.**
+### What has been tested, and what has not
+
+Tested: every new analysis path, on experiment 002's real predictions or on made-up
+measurements; that ColabFold accepts a crystal structure file as a template; that
+the language model loads and scores on the remote machine.
+
+Not tested, because testing them is running the experiment: an AlphaFold2
+prediction with a template; the agreement analysis on the real measurements; the
+panel summary on the real panel. If one of these fails on the first run, nothing
+is lost: finished predictions are kept and the run can be repeated.
+
+## How the three fit the student project
+
+| Student-guide option | Is |
+|---|---|
+| 1. Does a tool built for the question do better? | Experiment 003, on ubiquitin, where the measured answer exists |
+| 2. Is it the same with more mutants? | Experiment 005 |
+| 3. Does letting the network look at known structures change the answer? | Experiment 004 |
+| 4. Bring it to physiology | Still open, and now with three more worked protocols to copy from |
+
+005 is the natural one to hand to a student: the rule, the panel table and the
+final count are all things a sixth-semester student can run and defend, and it is
+prepared to the point where running it is one command.
 
 ## Considered and left out for now
 
@@ -130,12 +117,3 @@ laptop.
   2023). None is of a protein already in this repository, so ubiquitin was kept;
   it is the natural follow-up if 003 raises the question "harmful to growth, or to
   folding?".
-
-## How the three fit the student project
-
-| Student-guide option | Becomes |
-|---|---|
-| 1. Does a tool built for the question do better? | Experiment 003, on ubiquitin, where the measured answer exists |
-| 2. Is it the same with more mutants? | Experiment 005 |
-| 3. Does letting the network look at known structures change the answer? | Experiment 004 |
-| 4. Bring it to physiology | Still open, and now with three more worked protocols to copy from |

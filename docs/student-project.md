@@ -115,8 +115,8 @@ GPU PC, running ten at a time.
 
 Reproducing experiment 002 is weeks 1-2, not the project. The project is one
 question that 002 leaves open. Each of these keeps the same skeleton. The first
-three now have a full protocol, checked against the data but not yet run; see
-[the next three experiments](next-experiments.md).
+three now have a full protocol and are prepared to the point where running them
+is one command; see [the next three experiments](next-experiments.md).
 
 1. **Does a tool built for the question do better?** AlphaFold2 could not tell a
    harmful mutation from a harmless one. Score mutations with tools made for that
