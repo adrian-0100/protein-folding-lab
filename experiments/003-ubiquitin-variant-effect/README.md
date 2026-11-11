@@ -1,7 +1,9 @@
 # Experiment 003: a tool built for the question
 
-**Status: prepared, not run (2026-11-10).** The measurements are downloaded, the sample of 40 mutants is drawn, the alignment is built and the language model is installed on the remote machine. No score has been computed and no structure predicted. This is the protocol. Hypotheses and decision rules
-are fixed here before any score is computed.
+Written on 2026-11-10, before any score was computed or any structure predicted;
+run on 2026-11-11. Results are in [results/REPORT.md](results/REPORT.md),
+conclusions in [NOTEBOOK.md](NOTEBOOK.md). What follows is the protocol as it stood
+before the run, hypotheses and decision rules included.
 
 ## Question
 

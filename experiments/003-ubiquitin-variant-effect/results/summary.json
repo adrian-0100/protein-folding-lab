@@ -1,0 +1,107 @@
+{
+  "experiment": "003-ubiquitin-variant-effect",
+  "assay": "RL40A_YEAST_Roscoe_2013",
+  "mutants_measured": 1195,
+  "harmful": 437,
+  "sample_size": 40,
+  "agreement": {
+    "all_mutants": {
+      "blosum62": {
+        "n": 1195,
+        "spearman": 0.287,
+        "auc": 0.636
+      },
+      "alignment_log_odds": {
+        "n": 1195,
+        "spearman": 0.42,
+        "auc": 0.719
+      },
+      "language_model": {
+        "n": 1195,
+        "spearman": 0.632,
+        "auc": 0.837
+      }
+    },
+    "random_sample": {
+      "blosum62": {
+        "n": 40,
+        "spearman": 0.387,
+        "auc": 0.684
+      },
+      "alignment_log_odds": {
+        "n": 40,
+        "spearman": 0.375,
+        "auc": 0.685
+      },
+      "language_model": {
+        "n": 40,
+        "spearman": 0.712,
+        "auc": 0.838
+      },
+      "af2_plddt_site": {
+        "n": 40,
+        "spearman": 0.41,
+        "auc": 0.71
+      },
+      "af2_plddt_mean": {
+        "n": 40,
+        "spearman": 0.57,
+        "auc": 0.782
+      },
+      "af2_ca_shift": {
+        "n": 40,
+        "spearman": 0.546,
+        "auc": 0.718
+      }
+    }
+  },
+  "ceiling": {
+    "assay": "RL40A_YEAST_Mavor_2016",
+    "n": 1138,
+    "spearman": 0.842,
+    "auc": 0.971
+  },
+  "named_cases": [
+    {
+      "mutant": "K63A",
+      "measured": -0.048,
+      "harmful": false,
+      "measured_percentile": 60,
+      "blosum62": -1.0,
+      "blosum62_percentile": 46,
+      "alignment_log_odds": -1.949,
+      "alignment_log_odds_percentile": 88,
+      "language_model": 0.01,
+      "language_model_percentile": 97,
+      "af2_plddt_site": -0.826,
+      "af2_plddt_site_percentile": 55,
+      "af2_plddt_mean": -0.321,
+      "af2_plddt_mean_percentile": 69,
+      "af2_ca_shift": -0.039,
+      "af2_ca_shift_percentile": 90
+    },
+    {
+      "mutant": "L67A",
+      "measured": -0.354,
+      "harmful": true,
+      "measured_percentile": 30,
+      "blosum62": -1.0,
+      "blosum62_percentile": 46,
+      "alignment_log_odds": -5.635,
+      "alignment_log_odds_percentile": 11,
+      "language_model": -7.812,
+      "language_model_percentile": 34,
+      "af2_plddt_site": -0.478,
+      "af2_plddt_site_percentile": 71,
+      "af2_plddt_mean": -0.318,
+      "af2_plddt_mean_percentile": 74,
+      "af2_ca_shift": -0.093,
+      "af2_ca_shift_percentile": 43
+    }
+  ],
+  "decision_rules": {
+    "H1 evolution carries the signal (S1 AUC >= 0.70 on all mutants)": true,
+    "H2 the language model does at least as well (S2 rho >= S1 rho - 0.05)": true,
+    "H3 AlphaFold2's confidence does not separate them (S3 AUC < 0.65, or not above S0)": "inconclusive at this sample size"
+  }
+}

@@ -4,15 +4,18 @@ A small, reproducible setup for running structure-prediction experiments the way
 research group does, written so that someone new to the subject can follow what
 happens at each step and why.
 
-Two experiments are already run. Read this page first, then them, in order:
+Three experiments are already run. Read this page first, then them, in order:
 
 1. [001-ubiquitin-L67A](experiments/001-ubiquitin-L67A/README.md): does AlphaFold2
    react to a mutation in the core of a small protein? (Barely.)
 2. [002-lysozyme-amyloid](experiments/002-lysozyme-amyloid/README.md): two disease
    mutations whose real structures are known. Does it predict the one that moves?
    (No.)
+3. [003-ubiquitin-variant-effect](experiments/003-ubiquitin-variant-effect/README.md):
+   which score agrees with a laboratory measurement of 1,195 mutants? (A protein
+   language model, clearly. AlphaFold2's confidence: undecided on 40 mutants.)
 
-Three more are prepared and ready to run, each with one command:
+Two more are prepared and ready to run, each with one command:
 [docs/next-experiments.md](docs/next-experiments.md).
 
 ## The idea in five minutes
@@ -108,7 +111,7 @@ experiments/
     NOTEBOOK.md           lab notebook: what was done, what came out, what it means
     inputs/ reference/ msa/ predictions/ results/     produced by the pipeline
   002-lysozyme-amyloid/   the same layout; adds crystal structures of the mutants themselves
-  003-ubiquitin-variant-effect/   prepared, not run: scores against 1,195 measured mutants
+  003-ubiquitin-variant-effect/   four scores against 1,195 measured mutants; adds scores/
   004-lysozyme-templates/         prepared, not run: hand the network a structure to start from
   005-t4-lysozyme-panel/          prepared, not run: eight mutants chosen by rule
 docs/

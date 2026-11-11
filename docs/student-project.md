@@ -124,6 +124,9 @@ is one command; see [the next three experiments](next-experiments.md).
    variants for this, so the protocol uses ubiquitin, where 1,195 mutants have
    been measured:
    [experiment 003](../experiments/003-ubiquitin-variant-effect/README.md).
+   This one has been run; its
+   [notebook](../experiments/003-ubiquitin-variant-effect/NOTEBOOK.md) has the
+   answer.
 2. **Is it the same with more mutants?** Two mutations are an anecdote. Phage T4
    lysozyme has hundreds of mutant crystal structures in the PDB. Pick ten, half
    that move the backbone and half that do not, and measure how often the

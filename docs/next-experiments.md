@@ -1,9 +1,15 @@
 # The next three experiments
 
-**Prepared, not run.** Each experiment has its full protocol in its own folder,
-written the way 001 and 002 were: question, hypotheses and decision rules fixed
-before any result exists. As of 2026-11-10 everything they need is built, fetched
-and checked on the remote machine. What is left is to run them.
+**003 is run (2026-11-11). 004 and 005 are prepared, not run.** Each experiment
+has its full protocol in its own folder, written the way 001 and 002 were:
+question, hypotheses and decision rules fixed before any result exists. As of
+2026-11-10 everything they need was built, fetched and checked on the remote
+machine. What is left is to run 004 and 005.
+
+What 003 found, in one line: the language model agrees best with the laboratory
+(AUC 0.84 on all 1,195 mutants), the plain alignment score passes its bar (0.72),
+and AlphaFold2's confidence came out undecided on the sample of 40 (0.71). See its
+[notebook](../experiments/003-ubiquitin-variant-effect/NOTEBOOK.md).
 
 ## Where we are
 
@@ -42,17 +48,15 @@ infra/remote-gpu-pc/remote run experiments/004-lysozyme-templates
 ```
 
 ```bash
-infra/remote-gpu-pc/remote run experiments/003-ubiquitin-variant-effect
-```
-
-```bash
 infra/remote-gpu-pc/remote run experiments/005-t4-lysozyme-panel
 ```
 
-Recommended order: 004 first (half an hour, and it exercises the template code),
-then 003, then 005. They are independent. About five hours in total, during which
-the remote machine's processor is fully used: agree each run with whoever else uses
-it, and prefer the evening.
+003 was run the same way on 2026-11-11 and took 2 h 32 min, as estimated.
+
+Recommended order for the two that remain: 004 first (half an hour, and it
+exercises the template code), then 005. They are independent. About two and a half
+hours for both, during which the remote machine's processor is fully used: agree
+each run with whoever else uses it, and prefer the evening.
 
 After each run: read `results/REPORT.md`, then write the experiment's `NOTEBOOK.md`.
 The report gives numbers and verdicts by the pre-set rules; what they mean is
@@ -83,9 +87,10 @@ measurements; that ColabFold accepts a crystal structure file as a template; tha
 the language model loads and scores on the remote machine.
 
 Not tested, because testing them is running the experiment: an AlphaFold2
-prediction with a template; the agreement analysis on the real measurements; the
-panel summary on the real panel. If one of these fails on the first run, nothing
-is lost: finished predictions are kept and the run can be repeated.
+prediction with a template; the panel summary on the real panel. If one of these
+fails on the first run, nothing is lost: finished predictions are kept and the run
+can be repeated. The agreement analysis on the real measurements was on this list
+until 003 ran; it worked on the first run.
 
 ## How the three fit the student project
 

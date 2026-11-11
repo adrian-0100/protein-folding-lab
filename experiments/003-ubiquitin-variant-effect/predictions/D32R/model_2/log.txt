@@ -1,0 +1,13 @@
+2026-11-11 12:40:21,283 Running colabfold 1.6.3
+2026-11-11 12:40:21,312 WARNING: no GPU detected, will be using CPU
+2026-11-11 12:40:21,397 Found 5 citations for tools or databases
+2026-11-11 12:40:21,397 Query 1/1: D32R (length 76)
+2026-11-11 12:40:22,459 Setting max_seq=512, max_extra_seq=5120
+2026-11-11 12:42:14,031 alphafold2_ptm_model_2_seed_000 recycle=0 pLDDT=94.6 pTM=0.82
+2026-11-11 12:43:59,616 alphafold2_ptm_model_2_seed_000 recycle=1 pLDDT=95.2 pTM=0.829 tol=0.124
+2026-11-11 12:45:45,790 alphafold2_ptm_model_2_seed_000 recycle=2 pLDDT=95.2 pTM=0.83 tol=0.0441
+2026-11-11 12:47:29,189 alphafold2_ptm_model_2_seed_000 recycle=3 pLDDT=95.1 pTM=0.827 tol=0.0373
+2026-11-11 12:47:29,189 alphafold2_ptm_model_2_seed_000 took 424.8s (3 recycles)
+2026-11-11 12:47:29,192 reranking models by 'plddt' metric
+2026-11-11 12:47:29,192 rank_001_alphafold2_ptm_model_2_seed_000 pLDDT=95.1 pTM=0.827
+2026-11-11 12:47:29,327 Done

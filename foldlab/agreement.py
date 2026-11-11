@@ -185,14 +185,17 @@ def report(exp: Experiment) -> None:
     ax.text(0.5, -0.75, "coin flip", ha="center", fontsize=8, color=INK_2)
     if summary["ceiling"]:
         ax.axvline(summary["ceiling"]["auc"], color=INK, linewidth=1)
-        ax.text(summary["ceiling"]["auc"], -0.75, "a second lab scan", ha="center", fontsize=8, color=INK)
+        ax.text(summary["ceiling"]["auc"] - 0.01, -0.75, "a second lab scan", ha="right", fontsize=8, color=INK)
     ax.set_yticks(range(len(order)), [names[c] for c in order])
     ax.set_ylim(len(order) - 0.5, -1.1)
     ax.set_xlim(0, 1.05)
     ax.set_xlabel(f"AUC on the {summary['sample_size']} randomly drawn mutants")
-    ax.set_title("How often does each score order a harmful and a tolerated mutant correctly?")
     ax.grid(axis="y", visible=False)
-    fig.tight_layout()
+    # The title belongs to the figure, not the axes: the score names take half the width,
+    # and a title anchored to the axes runs off the right edge.
+    fig.suptitle("How often does each score order a harmful\nand a tolerated mutant correctly?",
+                 x=0.02, ha="left", fontsize=11, fontweight="bold")
+    fig.tight_layout(rect=(0, 0, 1, 0.99))
     fig.savefig(results / "auc_by_score.png")
     plt.close(fig)
 
