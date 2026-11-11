@@ -5,3 +5,11 @@ requires-python = ">=3.12"
 dependencies = [
     "colabfold[alphafold]>=1.6.3",
 ]
+
+[project.optional-dependencies]
+# Only for the language-model score of variant-effect experiments (experiment 003).
+# Install with: uv sync --extra plm
+plm = [
+    "torch>=2.4",
+    "transformers>=4.44",
+]

@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import platform
+import shutil
 import subprocess
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -28,7 +29,7 @@ def _sha256(path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _command(exp: Experiment, variant: str, out: Path, models: list[int] | None) -> list[str]:
+def _command(exp: Experiment, variant: str, out: Path, models: list[int]) -> list[str]:
     settings = exp.cfg["prediction"]
     command = [
         "colabfold_batch", str(exp.msa / f"{variant}.a3m"), str(out),
@@ -37,13 +38,36 @@ def _command(exp: Experiment, variant: str, out: Path, models: list[int] | None)
         "--num-seeds", str(settings["num_seeds"]),
         "--random-seed", str(settings["random_seed"]),
         "--data", str(WEIGHTS_DIR),
-    ]
-    if models is None:
-        command += ["--num-models", str(settings["num_models"])]
-    else:
         # Only these networks, in this order. Seeds and everything else are unchanged.
-        command += ["--num-models", str(len(models)), "--model-order", ",".join(map(str, models))]
+        "--num-models", str(len(models)), "--model-order", ",".join(map(str, models)),
+    ]
+    hint = exp.templates(variant)
+    if hint == "search":
+        # ColabFold asks its server for the best-matching structures in the PDB.
+        command += ["--templates"]
+    elif hint:
+        # Hand the network exactly these structures. ColabFold writes index files next to them,
+        # so every process gets a private copy: ten processes sharing one folder would collide.
+        folder = out / "_templates"
+        folder.mkdir(parents=True, exist_ok=True)
+        for pdb in hint:
+            shutil.copy(exp.dir / "templates" / f"{pdb}.pdb", folder / f"{pdb.lower()}.pdb")
+        command += ["--templates", "--custom-template-path", str(folder)]
     return command
+
+
+def _reuse(exp: Experiment, variant: str) -> None:
+    """Copy predictions an earlier experiment already made with identical inputs and settings."""
+    reuse = exp.cfg.get("reuse")
+    if not reuse or variant not in reuse.get("variants", []):
+        return
+    source = Experiment.load(exp.dir / reuse["from"])
+    for model in exp.models:
+        there = source.predictions / variant / f"model_{model}"
+        here = exp.predictions / variant / f"model_{model}"
+        if _done(there, variant) and not _done(here, variant):
+            shutil.copytree(there, here, dirs_exist_ok=True)
+            print(f"  {variant} model {model}: copied from {source.cfg['experiment']['id']}")
 
 
 def _done(folder: Path, variant: str) -> bool:
@@ -53,8 +77,7 @@ def _done(folder: Path, variant: str) -> bool:
 def variant_done(exp: Experiment, variant: str) -> bool:
     """True if every prediction of this variant is on disk, in either layout."""
     out = exp.predictions / variant
-    models = range(1, exp.cfg["prediction"]["num_models"] + 1)
-    return _done(out, variant) or all(_done(out / f"model_{m}", variant) for m in models)
+    return _done(out, variant) or all(_done(out / f"model_{m}", variant) for m in exp.models)
 
 
 def _run_task(exp: Experiment, variant: str, model: int) -> tuple[str, float]:
@@ -77,10 +100,12 @@ def run(exp: Experiment) -> None:
     jobs = int(os.environ.get("FOLDLAB_JOBS", "1"))
     exp.predictions.mkdir(parents=True, exist_ok=True)
     exp.results.mkdir(parents=True, exist_ok=True)
-    per_variant = settings["num_models"] * settings["num_seeds"]
+    per_variant = len(exp.models) * settings["num_seeds"]
 
     timings: dict[str, float] = {}
     started = time.time()
+    for name in exp.variants:
+        _reuse(exp, name)
     todo = [name for name in exp.variants if not variant_done(exp, name)]
     for name in exp.variants:
         if name not in todo:
@@ -89,14 +114,14 @@ def run(exp: Experiment) -> None:
     if jobs <= 1:
         for name in todo:
             print(f"{name}: predicting {per_variant} structures "
-                  f"({settings['num_models']} models x {settings['num_seeds']} seeds)...", flush=True)
+                  f"({len(exp.models)} models x {settings['num_seeds']} seeds)...", flush=True)
             t0 = time.time()
-            subprocess.run(_command(exp, name, exp.predictions / name, None), check=True, env=COLABFOLD_ENV)
+            subprocess.run(_command(exp, name, exp.predictions / name, exp.models), check=True, env=COLABFOLD_ENV)
             timings[name] = round(time.time() - t0, 1)
             print(f"{name}: done in {timings[name]:.0f} s")
     elif todo:
         tasks = [
-            (name, model) for name in todo for model in range(1, settings["num_models"] + 1)
+            (name, model) for name in todo for model in exp.models
             if not _done(exp.predictions / name / f"model_{model}", name)
         ]
         print(f"Predicting {len(tasks) * settings['num_seeds']} structures as {len(tasks)} processes "
@@ -134,6 +159,13 @@ def run(exp: Experiment) -> None:
         "settings": settings,
         "inputs_sha256": {
             f"msa/{name}.a3m": _sha256(exp.msa / f"{name}.a3m") for name in exp.variants
+        },
+        # What each variant was handed as a template, and for a search what ColabFold picked.
+        "templates": {
+            name: {"asked": exp.templates(name),
+                   "used": sorted({p.stem for p in (exp.predictions / name).rglob("templates_*/*.cif")}
+                                  | {p.stem for p in (exp.predictions / name).rglob("_templates/*.pdb")})}
+            for name in exp.variants if exp.templates(name)
         },
         "prediction_runs": runs,
     }

@@ -56,8 +56,10 @@ def conservation(exp: Experiment) -> pd.DataFrame:
                 "msa_depth": total,
                 "identity": column[residue] / total,
                 "conservation": 1 - entropy / math.log2(20),
+                # ties broken alphabetically, so the table is the same on every run
                 "most_common_substitutions": " ".join(
-                    f"{aa}:{n / total:.0%}" for aa, n in column.most_common(4) if aa != residue
+                    f"{aa}:{n / total:.0%}"
+                    for aa, n in sorted(column.items(), key=lambda kv: (-kv[1], kv[0]))[:4] if aa != residue
                 ),
                 # Full profile: how often each amino acid occupies this position among relatives.
                 **{f"freq_{aa}": column[aa] / total for aa in AMINO_ACIDS},
@@ -76,8 +78,21 @@ def _stats(values) -> dict:
     }
 
 
+def _loop_verdict(to_baseline: float, to_this: float, rule: dict) -> str:
+    """Which crystal a prediction's moved residues resemble, by the rule fixed in the experiment README."""
+    if to_this < rule["near"] and to_baseline > rule["far"]:
+        return "follows this crystal"
+    if to_baseline < rule["near"] and to_this > rule["far"]:
+        return "stays with the baseline crystal"
+    return "in between"
+
+
 def run(exp: Experiment) -> None:
     exp.results.mkdir(parents=True, exist_ok=True)
+    if "truth" in exp.cfg:
+        # A different kind of experiment: scores against a laboratory scan, not structures against structures.
+        from . import agreement
+        return agreement.run(exp)
     offset = exp.first_residue - 1
     first, last = exp.cfg["analysis"]["core_residues"]
     core = list(range(first, last + 1))
@@ -117,8 +132,11 @@ def run(exp: Experiment) -> None:
     by_key = {name: {(p.model, p.seed): p for p in group} for name, group in predictions.items()}
     comparisons, deviations = [], []
     summary_mutants = {}
+    # A variant that changes no residue (same sequence, different template) is examined at the
+    # positions the experiment is about: every site mutated in any variant.
+    every_site = sorted({m.position for muts in exp.variants.values() for m in muts})
     for mutant in exp.mutants:
-        sites = [m.position for m in exp.variants[mutant]]
+        sites = [m.position for m in exp.variants[mutant]] or every_site
         local = st.neighbors(reference, sites, cutoff)
 
         pairs = [("mutation", by_key[baseline][key], by_key[mutant][key]) for key in sorted(by_key[baseline])]
@@ -242,6 +260,19 @@ def run(exp: Experiment) -> None:
                 "moved_residues_rmsd_to_mutant_crystal": _stats(
                     st.rmsd_after_fit(p.atoms, crystal, still, moved) for p in predictions[mutant]),
             })
+            # One line per prediction: which crystal do its moved residues resemble?
+            verdict_rule = exp.cfg["analysis"].get("loop_verdict")
+            each = []
+            for p in sorted(predictions[mutant], key=lambda p: (p.model, p.seed)):
+                to_baseline = st.rmsd_after_fit(p.atoms, reference, still, moved)
+                to_this = st.rmsd_after_fit(p.atoms, crystal, still, moved)
+                each.append({"model": p.model, "seed": p.seed, "to_baseline_crystal": round(to_baseline, 2),
+                             "to_this_crystal": round(to_this, 2),
+                             "verdict": _loop_verdict(to_baseline, to_this, verdict_rule) if verdict_rule else None})
+            truth["per_prediction"] = each
+            if verdict_rule:
+                verdicts = {e["verdict"] for e in each}
+                truth["verdict"] = verdicts.pop() if len(verdicts) == 1 else "split: " + ", ".join(sorted(verdicts))
         summary_mutants[mutant]["experimental_truth"] = truth
     per_residue.round(3).to_csv(exp.results / "per_residue.csv", index=False)
 
@@ -261,8 +292,60 @@ def run(exp: Experiment) -> None:
                 "most_common_substitutions": row.most_common_substitutions,
             }
             for i, row in per_residue.iterrows()
-            if row.position in info["sites"]
+            if row.position in new_residue
         ]
+
+    # --- 3c. How much do two crystal structures of the *same* protein differ? The experimental
+    #         counterpart of seed noise: a mutant only "moves" if it moves more than this. --------
+    experimental_noise = None
+    if exp.replicates:
+        chain = exp.cfg["reference"]["chain"]
+        rmsds, largest = [], []
+        for path in exp.replicates:
+            other = st.load_atoms(path, chain, exp.reference_offset)
+            shared = [r for r in reference_core if r in other and "CA" in other[r]]
+            rot, tran, rmsd = st.superpose(st.ca(other, shared), st.ca(reference, shared))
+            overlaid = st.move(other, rot, tran)
+            rmsds.append(rmsd)
+            largest.append(max(float(np.linalg.norm(overlaid[r]["CA"] - reference[r]["CA"])) for r in shared))
+        experimental_noise = {"structures": [p.stem for p in exp.replicates],
+                              "ca_rmsd": _stats(rmsds), "largest_shift": _stats(largest)}
+
+    # --- 3d. A panel chosen by rule: one line per mutant, and the count the experiment is after. --
+    panel = None
+    if "selection" in exp.cfg and (exp.selection_dir / "panel.csv").exists():
+        roles = pd.read_csv(exp.selection_dir / "panel.csv").set_index("mutation").role.to_dict()
+        floor = experimental_noise["largest_shift"]["max"] if experimental_noise else moved_threshold
+        lines = []
+        for mutant, info in summary_mutants.items():
+            truth = info.get("experimental_truth")
+            if not truth or mutant not in roles:
+                continue
+            fold = info["metrics"]["Cα RMSD, folded core (Å)"]
+            line = {"mutant": mutant, "role": roles[mutant], "pdb": truth["pdb"],
+                    "experimental_largest_shift": truth["largest_shift"],
+                    "predicted_largest_shift": truth["predicted_largest_shift"],
+                    "fold_verdict": fold["verdict"], "captured": None, "false_alarm": None}
+            if roles[mutant] == "mover" and truth["moved_residues"]:
+                half = truth["predicted_shift_of_moved_residues"]["median"] >= 0.5 * truth["experimental_shift_of_moved_residues"]["median"]
+                nearer = (truth["moved_residues_rmsd_to_mutant_crystal"]["median"]
+                          < truth["moved_residues_rmsd_to_baseline_crystal"]["median"])
+                line["captured"] = bool(half and nearer)
+            elif roles[mutant] == "non-mover":
+                line["false_alarm"] = bool(fold["exceeds_seed_noise"] and fold["exceeds_model_noise"]
+                                           and truth["predicted_largest_shift"] > floor)
+            lines.append(line)
+        table = pd.DataFrame(lines)
+        table.to_csv(exp.results / "panel.csv", index=False)
+        movers, others = table[table.role == "mover"], table[table.role == "non-mover"]
+        panel = {
+            "noise_floor_largest_shift": floor,
+            "movers": len(movers), "captured": int(movers.captured.sum()),
+            "non_movers": len(others), "false_alarms": int(others.false_alarm.sum()),
+            "rank_correlation_predicted_vs_experimental": round(float(
+                table.experimental_largest_shift.corr(table.predicted_largest_shift, method="spearman")), 2),
+            "mutants": lines,
+        }
 
     # --- 4. Summary -----------------------------------------------------------------------------
     summary = {
@@ -282,6 +365,10 @@ def run(exp: Experiment) -> None:
         },
         "mutants": summary_mutants,
     }
+    if experimental_noise:
+        summary["experimental_noise"] = experimental_noise
+    if panel:
+        summary["panel"] = panel
     (exp.results / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
 
     # --- What just happened ----------------------------------------------------------------------
@@ -300,4 +387,9 @@ def run(exp: Experiment) -> None:
             print(f"  crystal {truth['pdb']} vs baseline crystal: largest shift {truth['largest_shift']} Å at residue "
                   f"{truth['largest_shift_residue']}; predicted largest shift {truth['predicted_largest_shift']} Å "
                   f"at residue {truth['predicted_largest_shift_residue']}")
+        if truth and truth.get("verdict"):
+            print(f"  over the residues that move in {truth['pdb']}: {truth['verdict']}")
+    if panel:
+        print(f"\nPanel: {panel['captured']} of {panel['movers']} movers captured; "
+              f"{panel['false_alarms']} of {panel['non_movers']} non-movers raised a false alarm")
     print("\nwrote results/predictions.csv, comparisons.csv, per_residue.csv, summary.json")

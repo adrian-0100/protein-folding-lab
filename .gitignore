@@ -27,3 +27,19 @@ infra/remote-gpu-pc/invites/
 
 # Earlier runs kept on this machine only (see experiments/*/NOTEBOOK.md).
 archive/
+
+# Downloads shared between experiments (the ProteinGym archive).
+data/
+
+# Structures downloaded for a survey: hundreds of files, refetched by `select`.
+experiments/*/selection/pdb/
+
+# A mutant's alignment is the baseline's with one row changed: `msa` rebuilds it in a second.
+experiments/*/msa/*.a3m
+!experiments/*/msa/wt.a3m
+
+# Private copies of template folders made for each prediction process.
+experiments/*/predictions/**/_templates/
+
+# Laboratory scans copied out of the ProteinGym archive: refetched by `prepare`.
+experiments/*/truth/

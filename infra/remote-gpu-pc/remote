@@ -344,7 +344,8 @@ EOF
     push --exclude __pycache__ "$ROOT/foldlab" "$ROOT/pyproject.toml" "$ROOT/uv.lock" "$ROOT/.python-version" \
       "$ALIAS:$REMOTE_DIR/"
     step "Installing Python packages and the AlphaFold2 weights there (3.7 GB, once)"
-    guest "cd $REMOTE_DIR && $UV sync && $UV run python -c \"
+    # --all-extras: the remote also gets the optional packages (the language model for variant-effect scores).
+    guest "cd $REMOTE_DIR && $UV sync --all-extras && $UV run --all-extras python -c \"
 from pathlib import Path
 from colabfold.download import download_alphafold_params
 download_alphafold_params('alphafold2_ptm', Path('weights'))
@@ -375,7 +376,7 @@ else
   # PYTHONUNBUFFERED: lines reach the log as they are printed, so the stream below is live and in order.
   # FOLDLAB_JOBS: one prediction keeps about 6 of 20 cores busy, so several run side by side.
   # FOLDLAB_MACHINE: the name provenance.json records instead of the machine's real hostname.
-  nohup bash -c "PYTHONUNBUFFERED=1 FOLDLAB_JOBS='$jobs' FOLDLAB_MACHINE='$machine' nice -n 10 '$uv' run python -m foldlab '$step' '$exp'; echo \$? > '$statusfile'" >"$log" 2>&1 &
+  nohup bash -c "PYTHONUNBUFFERED=1 FOLDLAB_JOBS='$jobs' FOLDLAB_MACHINE='$machine' nice -n 10 '$uv' run --all-extras python -m foldlab '$step' '$exp'; echo \$? > '$statusfile'" >"$log" 2>&1 &
   echo $! >"$pidfile"
 fi
 pid="$(cat "$pidfile")"

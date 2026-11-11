@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import itertools
 import json
 import textwrap
 from pathlib import Path
@@ -326,7 +327,53 @@ def write_report(exp: Experiment, summary: dict, provenance: dict) -> None:
                       "|---|---|---|"]
             lines += [f"| {name} predictions | {_range(truth['rmsd_to_baseline_crystal'][name])} | {_range(truth['rmsd_to_mutant_crystal'][name])} |"
                       for name in (base, mutant)]
+            if truth.get("per_prediction") and truth.get("verdict"):
+                lines += ["", f"Each prediction, over the residues that move in {truth['pdb']} "
+                              f"(distance in Å after overlaying the residues that do not move). "
+                              f"Verdict for this variant: **{truth['verdict']}**.", "",
+                          f"| Network | Seed | From the {base} crystal ({pdb}) | From {truth['pdb']} | Reading |",
+                          "|---|---|---|---|---|"]
+                lines += [f"| {e['model']} | {e['seed']} | {e['to_baseline_crystal']:.2f} | {e['to_this_crystal']:.2f} | {e['verdict']} |"
+                          for e in truth["per_prediction"]]
             lines += ["", f"![experiment vs prediction](experiment_vs_prediction_{mutant}.png)"]
+
+    # Experiments about templates: one table of sequence against what the network was handed.
+    handed = {name: exp.templates(name) for name in summary["variants"] if exp.templates(name)}
+    if handed:
+        lines += ["", "## Sequence against template", "",
+                  "Which crystal the moved residues of each variant's predictions resemble.", "",
+                  "| Variant | Mutations | Template handed over | Scored against | Verdict |", "|---|---|---|---|---|"]
+        for name in summary["variants"]:
+            info = summary["mutants"].get(name, {})
+            truth = info.get("experimental_truth") or {}
+            mutations = ", ".join(str(m) for m in exp.variants[name]) or "none"
+            hint = handed.get(name)
+            hint = "none" if not hint else "database search" if hint == "search" else ", ".join(hint)
+            lines.append(f"| {name} | {mutations} | {hint} | {truth.get('pdb', '-')} | {truth.get('verdict', '-')} |")
+
+    # Experiments on a panel chosen by rule: the count, and the table behind it.
+    noise = summary.get("experimental_noise")
+    if noise:
+        lines += ["", "## How much do crystals of the same protein differ?", "",
+                  f"{len(noise['structures'])} other crystal structures of the unmutated protein "
+                  f"({', '.join(noise['structures'])}) against {pdb}: Cα RMSD {_range(noise['ca_rmsd'])} Å, "
+                  f"largest single Cα shift {_range(noise['largest_shift'])} Å. A mutant has moved only if it "
+                  f"moves more than this."]
+    panel = summary.get("panel")
+    if panel:
+        lines += ["", "## The panel", "",
+                  f"**{panel['captured']} of {panel['movers']} movers captured. "
+                  f"{panel['false_alarms']} of {panel['non_movers']} non-movers raised a false alarm.** "
+                  f"Rank correlation between experimental and predicted largest shift, over the whole panel: "
+                  f"{panel['rank_correlation_predicted_vs_experimental']:.2f}.", "",
+                  "| Mutant | Role | Crystal | Largest shift in the crystal (Å) | Largest shift in the prediction (Å) | Fold-level verdict | Captured | False alarm |",
+                  "|---|---|---|---|---|---|---|---|"]
+        yes_no = lambda v: "-" if v is None else "yes" if v else "no"
+        lines += [f"| {m['mutant']} | {m['role']} | {m['pdb']} | {m['experimental_largest_shift']:.2f} | "
+                  f"{m['predicted_largest_shift']:.2f} | {m['fold_verdict']} | {yes_no(m['captured'])} | {yes_no(m['false_alarm'])} |"
+                  for m in panel["mutants"]]
+        lines += ["", "![panel](panel.png)"]
+        fig_panel(panel, exp.results / "panel.png")
     software = provenance.get("software", {})
     lines += ["", "## Provenance", "",
               f"- ColabFold {software.get('colabfold')}, AlphaFold2 weights `{provenance.get('weights')}`, "
@@ -337,7 +384,35 @@ def write_report(exp: Experiment, summary: dict, provenance: dict) -> None:
     (exp.results / "REPORT.md").write_text("\n".join(lines))
 
 
+def fig_panel(panel: dict, out) -> None:
+    """One dot per mutant: how far the crystal moved against how far the prediction moved."""
+    fig, ax = plt.subplots(figsize=(5.6, 4.6))
+    table = pd.DataFrame(panel["mutants"])
+    for role, color in (("mover", MUTANT), ("non-mover", BASELINE)):
+        part = table[table.role == role]
+        ax.scatter(part.experimental_largest_shift, part.predicted_largest_shift, s=46, color=color,
+                   edgecolor=SURFACE, linewidth=1, label=role, zorder=3)
+        for row in part.itertuples():
+            ax.annotate(row.mutant, (row.experimental_largest_shift, row.predicted_largest_shift),
+                        xytext=(5, 4), textcoords="offset points", fontsize=8, color=INK_2)
+    top = max(table.experimental_largest_shift.max(), table.predicted_largest_shift.max()) * 1.1
+    ax.plot([0, top], [0, top], color=INK_2, linewidth=0.8, linestyle=(0, (2, 2)), zorder=1)
+    ax.text(top * 0.98, top * 0.93, "prediction = experiment", ha="right", fontsize=8, color=INK_2)
+    ax.axvspan(0, panel["noise_floor_largest_shift"], color=CONTEXT, alpha=0.15, linewidth=0)
+    ax.text(panel["noise_floor_largest_shift"] / 2, top * 0.5, "experimental\nnoise", ha="center", fontsize=8, color=INK_2)
+    ax.set(xlim=(0, top), ylim=(0, top), xlabel="Largest Cα shift in the crystal (Å)",
+           ylabel="Largest Cα shift in the prediction (Å)")
+    ax.set_title("Does the prediction move when the crystal does?")
+    ax.legend(loc="upper left")
+    fig.tight_layout()
+    fig.savefig(out)
+    plt.close(fig)
+
+
 def run(exp: Experiment) -> None:
+    if "truth" in exp.cfg:
+        from . import agreement
+        return agreement.report(exp)
     results = exp.results
     summary = json.loads((results / "summary.json").read_text())
     provenance_file = results / "provenance.json"
@@ -374,7 +449,7 @@ def run(exp: Experiment) -> None:
          "pdb": _aligned_pdb(top.path, None, offset, reference, core, aligned / f"{exp.baseline}.pdb")},
     ]
     sites = sorted({s for info in summary["mutants"].values() for s in info["sites"]})
-    for mutant, color in zip(summary["mutants"], MUTANT_COLORS):
+    for mutant, color in zip(summary["mutants"], itertools.cycle(MUTANT_COLORS)):
         match = next(p for p in st.load_predictions(exp.predictions / mutant, mutant, offset)
                      if (p.model, p.seed) == (top.model, top.seed))
         structures.append(
