@@ -1,0 +1,25 @@
+2026-11-11 16:45:44,449 Running colabfold 1.6.3
+2026-11-11 16:45:44,476 WARNING: no GPU detected, will be using CPU
+2026-11-11 16:45:44,600 Found 8 citations for tools or databases
+2026-11-11 16:45:44,600 Query 1/1: D67H_search (length 130)
+  0%|          | 0/150 [elapsed: 00:00 remaining: ?]SUBMIT:   0%|          | 0/150 [elapsed: 00:00 remaining: ?]RUNNING:   0%|          | 0/150 [elapsed: 00:01 remaining: ?]                                                             2026-11-11 16:45:45,986 Sleeping for 5s. Reason: RUNNING
+RUNNING:   0%|          | 0/150 [elapsed: 00:01 remaining: ?]RUNNING:   0%|          | 0/150 [elapsed: 00:06 remaining: ?]RUNNING:   3%|▎         | 5/150 [elapsed: 00:06 remaining: 03:07]                                                                 2026-11-11 16:45:51,367 Sleeping for 7s. Reason: RUNNING
+RUNNING:   3%|▎         | 5/150 [elapsed: 00:06 remaining: 03:07]RUNNING:   3%|▎         | 5/150 [elapsed: 00:13 remaining: 03:07]RUNNING:   8%|▊         | 12/150 [elapsed: 00:13 remaining: 02:36]                                                                  2026-11-11 16:45:58,760 Sleeping for 6s. Reason: RUNNING
+RUNNING:   8%|▊         | 12/150 [elapsed: 00:13 remaining: 02:36]RUNNING:   8%|▊         | 12/150 [elapsed: 00:20 remaining: 02:36]RUNNING:  12%|█▏        | 18/150 [elapsed: 00:20 remaining: 02:25]                                                                  2026-11-11 16:46:05,141 Sleeping for 8s. Reason: RUNNING
+RUNNING:  12%|█▏        | 18/150 [elapsed: 00:20 remaining: 02:25]COMPLETE:  12%|█▏        | 18/150 [elapsed: 00:28 remaining: 02:25]COMPLETE: 100%|██████████| 150/150 [elapsed: 00:28 remaining: 00:00]COMPLETE: 100%|██████████| 150/150 [elapsed: 00:29 remaining: 00:00]
+2026-11-11 16:46:18,436 Sequence 0 found templates: ['1lhl_A', '1gb7_A', '1gb8_A', '1gb5_A', '1di3_A', '1wqn_A', '1lhh_A', '1i20_A', '3ln2_B', '1yan_A', '1gfr_A', '1i1z_A', '1wqo_A', '1ge3_A', '3lhm_A', '1ckd_A', '133l_A', '1tdy_A', '1i22_B', '1ubz_A']
+2026-11-11 16:46:18,758 Setting max_seq=512, max_extra_seq=4756
+2026-11-11 16:49:26,060 alphafold2_ptm_model_2_seed_000 recycle=0 pLDDT=98.2 pTM=0.912
+2026-11-11 16:52:30,603 alphafold2_ptm_model_2_seed_000 recycle=1 pLDDT=98.4 pTM=0.916 tol=0.0753
+2026-11-11 16:55:37,431 alphafold2_ptm_model_2_seed_000 recycle=2 pLDDT=98.4 pTM=0.917 tol=0.0311
+2026-11-11 16:58:38,274 alphafold2_ptm_model_2_seed_000 recycle=3 pLDDT=98.4 pTM=0.916 tol=0.014
+2026-11-11 16:58:38,274 alphafold2_ptm_model_2_seed_000 took 737.4s (3 recycles)
+2026-11-11 17:01:42,282 alphafold2_ptm_model_2_seed_001 recycle=0 pLDDT=98.2 pTM=0.912
+2026-11-11 17:04:46,315 alphafold2_ptm_model_2_seed_001 recycle=1 pLDDT=98.4 pTM=0.917 tol=0.0829
+2026-11-11 17:07:45,139 alphafold2_ptm_model_2_seed_001 recycle=2 pLDDT=98.4 pTM=0.917 tol=0.0344
+2026-11-11 17:10:47,582 alphafold2_ptm_model_2_seed_001 recycle=3 pLDDT=98.4 pTM=0.916 tol=0.0146
+2026-11-11 17:10:47,582 alphafold2_ptm_model_2_seed_001 took 729.0s (3 recycles)
+2026-11-11 17:10:47,587 reranking models by 'plddt' metric
+2026-11-11 17:10:47,587 rank_001_alphafold2_ptm_model_2_seed_001 pLDDT=98.4 pTM=0.916
+2026-11-11 17:10:47,587 rank_002_alphafold2_ptm_model_2_seed_000 pLDDT=98.4 pTM=0.916
+2026-11-11 17:10:47,793 Done

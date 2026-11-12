@@ -1,0 +1,19 @@
+2026-11-09 21:46:00,049 Running colabfold 1.6.3
+2026-11-09 21:46:00,066 WARNING: no GPU detected, will be using CPU
+2026-11-09 21:46:00,158 Found 5 citations for tools or databases
+2026-11-09 21:46:00,158 Query 1/1: wt (length 130)
+2026-11-09 21:46:09,956 Setting max_seq=512, max_extra_seq=4751
+2026-11-09 21:48:10,093 alphafold2_ptm_model_2_seed_000 recycle=0 pLDDT=97.6 pTM=0.903
+2026-11-09 21:50:03,886 alphafold2_ptm_model_2_seed_000 recycle=1 pLDDT=97.9 pTM=0.907 tol=0.131
+2026-11-09 21:51:57,980 alphafold2_ptm_model_2_seed_000 recycle=2 pLDDT=98 pTM=0.906 tol=0.0457
+2026-11-09 21:53:52,747 alphafold2_ptm_model_2_seed_000 recycle=3 pLDDT=98.1 pTM=0.907 tol=0.0213
+2026-11-09 21:53:52,747 alphafold2_ptm_model_2_seed_000 took 461.1s (3 recycles)
+2026-11-09 21:55:47,011 alphafold2_ptm_model_2_seed_001 recycle=0 pLDDT=97.5 pTM=0.901
+2026-11-09 21:57:42,854 alphafold2_ptm_model_2_seed_001 recycle=1 pLDDT=97.9 pTM=0.906 tol=0.136
+2026-11-09 21:59:35,955 alphafold2_ptm_model_2_seed_001 recycle=2 pLDDT=98 pTM=0.905 tol=0.0474
+2026-11-09 22:01:31,141 alphafold2_ptm_model_2_seed_001 recycle=3 pLDDT=98.1 pTM=0.907 tol=0.0201
+2026-11-09 22:01:31,142 alphafold2_ptm_model_2_seed_001 took 458.2s (3 recycles)
+2026-11-09 22:01:31,146 reranking models by 'plddt' metric
+2026-11-09 22:01:31,146 rank_001_alphafold2_ptm_model_2_seed_001 pLDDT=98.1 pTM=0.907
+2026-11-09 22:01:31,147 rank_002_alphafold2_ptm_model_2_seed_000 pLDDT=98.1 pTM=0.907
+2026-11-09 22:01:31,474 Done

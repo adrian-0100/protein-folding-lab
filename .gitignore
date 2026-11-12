@@ -41,5 +41,9 @@ experiments/*/msa/*.a3m
 # Private copies of template folders made for each prediction process.
 experiments/*/predictions/**/_templates/
 
+# What ColabFold's template search downloads, once per prediction process: the same structures
+# every time. The ones it chose are named in each run's log.txt and *_template_domain_names.json.
+experiments/*/predictions/**/*_all/
+
 # Laboratory scans copied out of the ProteinGym archive: refetched by `prepare`.
 experiments/*/truth/

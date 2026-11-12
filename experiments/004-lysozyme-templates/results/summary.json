@@ -1,0 +1,2313 @@
+{
+  "experiment": "004-lysozyme-templates",
+  "baseline": "wt",
+  "msa_unique_sequences": 5066,
+  "variants": {
+    "wt": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 97.996,
+        "min": 97.875,
+        "max": 98.076,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 93.25,
+        "min": 92.44,
+        "max": 93.44,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.905,
+        "min": 0.9,
+        "max": 0.91,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.409,
+        "min": 0.404,
+        "max": 0.417,
+        "n": 4
+      }
+    },
+    "D67H": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 97.899,
+        "min": 97.815,
+        "max": 97.99,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 93.375,
+        "min": 92.56,
+        "max": 93.5,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.9,
+        "min": 0.9,
+        "max": 0.91,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.38,
+        "min": 0.371,
+        "max": 0.39,
+        "n": 4
+      }
+    },
+    "I56T": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 98.034,
+        "min": 97.929,
+        "max": 98.13,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 93.31,
+        "min": 93.19,
+        "max": 93.88,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.905,
+        "min": 0.9,
+        "max": 0.91,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.404,
+        "min": 0.398,
+        "max": 0.412,
+        "n": 4
+      }
+    },
+    "wt_search": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 98.458,
+        "min": 98.38,
+        "max": 98.541,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 95.75,
+        "min": 95.62,
+        "max": 96.0,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.915,
+        "min": 0.91,
+        "max": 0.92,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.264,
+        "min": 0.263,
+        "max": 0.265,
+        "n": 4
+      }
+    },
+    "D67H_search": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 98.348,
+        "min": 98.244,
+        "max": 98.413,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 95.53,
+        "min": 95.31,
+        "max": 95.62,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.915,
+        "min": 0.91,
+        "max": 0.92,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.245,
+        "min": 0.245,
+        "max": 0.248,
+        "n": 4
+      }
+    },
+    "I56T_search": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 98.448,
+        "min": 98.374,
+        "max": 98.532,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 95.185,
+        "min": 95.0,
+        "max": 95.44,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.915,
+        "min": 0.91,
+        "max": 0.92,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.263,
+        "min": 0.261,
+        "max": 0.264,
+        "n": 4
+      }
+    },
+    "wt_1LZ1": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 98.355,
+        "min": 98.289,
+        "max": 98.428,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 94.97,
+        "min": 94.69,
+        "max": 95.31,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.91,
+        "min": 0.91,
+        "max": 0.92,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.205,
+        "min": 0.195,
+        "max": 0.216,
+        "n": 4
+      }
+    },
+    "D67H_1LZ1": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 98.222,
+        "min": 98.184,
+        "max": 98.278,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 94.69,
+        "min": 94.5,
+        "max": 95.0,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.91,
+        "min": 0.91,
+        "max": 0.91,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.205,
+        "min": 0.196,
+        "max": 0.214,
+        "n": 4
+      }
+    },
+    "wt_1LYY": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 97.844,
+        "min": 97.743,
+        "max": 97.918,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 85.965,
+        "min": 85.62,
+        "max": 86.5,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.905,
+        "min": 0.9,
+        "max": 0.91,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.528,
+        "min": 0.508,
+        "max": 0.54,
+        "n": 4
+      }
+    },
+    "D67H_1LYY": {
+      "predictions": 4,
+      "plddt_mean": {
+        "median": 97.348,
+        "min": 97.306,
+        "max": 97.449,
+        "n": 4
+      },
+      "plddt_min": {
+        "median": 84.69,
+        "min": 84.06,
+        "max": 85.44,
+        "n": 4
+      },
+      "ptm": {
+        "median": 0.9,
+        "min": 0.9,
+        "max": 0.9,
+        "n": 4
+      },
+      "rmsd_core_to_reference": {
+        "median": 0.501,
+        "min": 0.491,
+        "max": 0.516,
+        "n": 4
+      }
+    }
+  },
+  "mutants": {
+    "D67H": {
+      "sites": [
+        85
+      ],
+      "neighbors_within_cutoff": [
+        68,
+        69,
+        70,
+        72,
+        79,
+        83,
+        84,
+        86,
+        87,
+        88,
+        91,
+        97,
+        98,
+        99
+      ],
+      "signed_delta_plddt_site_median": -1.41,
+      "signed_delta_plddt_mean_median": -0.094,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.11,
+            "min": 0.102,
+            "max": 0.116,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.033,
+            "min": 0.029,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.616,
+            "min": 0.599,
+            "max": 0.628,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.065,
+            "min": 0.052,
+            "max": 0.076,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.164,
+            "min": 0.154,
+            "max": 0.174,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 1.41,
+            "min": 1.31,
+            "max": 1.56,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.06,
+            "min": 0.0,
+            "max": 0.07,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.1,
+            "min": 0.07,
+            "max": 0.13,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.094,
+            "min": 0.029,
+            "max": 0.124,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.035,
+            "min": 0.022,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": false,
+          "verdict": "detectable but smaller than the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 7.6
+      },
+      "experimental_truth": {
+        "pdb": "1LYY",
+        "crystal_vs_crystal_rmsd": 1.94,
+        "largest_shift": 9.52,
+        "largest_shift_residue": 89,
+        "moved_threshold": 2.0,
+        "moved_residues": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          121
+        ],
+        "predicted_largest_shift": 0.74,
+        "predicted_largest_shift_residue": 85,
+        "rmsd_to_baseline_crystal": {
+          "wt": {
+            "median": 0.409,
+            "min": 0.404,
+            "max": 0.417,
+            "n": 4
+          },
+          "D67H": {
+            "median": 0.38,
+            "min": 0.371,
+            "max": 0.39,
+            "n": 4
+          }
+        },
+        "rmsd_to_mutant_crystal": {
+          "wt": {
+            "median": 1.783,
+            "min": 1.778,
+            "max": 1.796,
+            "n": 4
+          },
+          "D67H": {
+            "median": 1.82,
+            "min": 1.81,
+            "max": 1.826,
+            "n": 4
+          }
+        },
+        "experimental_shift_of_moved_residues": {
+          "median": 6.275,
+          "min": 2.071,
+          "max": 9.52,
+          "n": 13
+        },
+        "predicted_shift_of_moved_residues": {
+          "median": 0.149,
+          "min": 0.062,
+          "max": 0.603,
+          "n": 13
+        },
+        "seed_noise_at_moved_residues": {
+          "median": 0.08,
+          "min": 0.031,
+          "max": 0.147,
+          "n": 13
+        },
+        "moved_residues_rmsd_to_baseline_crystal": {
+          "median": 0.823,
+          "min": 0.759,
+          "max": 0.874,
+          "n": 4
+        },
+        "moved_residues_rmsd_to_mutant_crystal": {
+          "median": 5.735,
+          "min": 5.716,
+          "max": 5.77,
+          "n": 4
+        },
+        "per_prediction": [
+          {
+            "model": 1,
+            "seed": 0,
+            "to_baseline_crystal": 0.87,
+            "to_this_crystal": 5.72,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 1,
+            "seed": 1,
+            "to_baseline_crystal": 0.84,
+            "to_this_crystal": 5.75,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 0,
+            "to_baseline_crystal": 0.8,
+            "to_this_crystal": 5.72,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 1,
+            "to_baseline_crystal": 0.76,
+            "to_this_crystal": 5.77,
+            "verdict": "stays with the baseline crystal"
+          }
+        ],
+        "verdict": "stays with the baseline crystal"
+      },
+      "site_evidence": [
+        {
+          "position": 85,
+          "residue": "D",
+          "new_residue": "H",
+          "new_residue_frequency_in_msa": 0.0565,
+          "identity_in_msa": 0.324,
+          "conservation": 0.254,
+          "conservation_rank": "103 of 130",
+          "relative_accessibility": 0.198,
+          "most_common_substitutions": "N:14% S:13% P:9%"
+        }
+      ]
+    },
+    "I56T": {
+      "sites": [
+        74
+      ],
+      "neighbors_within_cutoff": [
+        19,
+        21,
+        26,
+        49,
+        50,
+        51,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        72,
+        73,
+        75,
+        76,
+        77,
+        102,
+        107,
+        110
+      ],
+      "signed_delta_plddt_site_median": -0.18,
+      "signed_delta_plddt_mean_median": 0.047,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.083,
+            "min": 0.081,
+            "max": 0.086,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.035,
+            "min": 0.032,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": false,
+          "verdict": "detectable but smaller than the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.11,
+            "min": 0.088,
+            "max": 0.227,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.051,
+            "min": 0.033,
+            "max": 0.202,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.13,
+            "min": 0.129,
+            "max": 0.132,
+            "n": 2
+          },
+          "exceeds_seed_noise": false,
+          "exceeds_model_noise": false,
+          "verdict": "within noise"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.18,
+            "min": 0.12,
+            "max": 0.31,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.07,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.155,
+            "min": 0.12,
+            "max": 0.19,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.047,
+            "min": 0.009,
+            "max": 0.097,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.039,
+            "min": 0.022,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": false,
+          "exceeds_model_noise": false,
+          "verdict": "within noise"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 6.0
+      },
+      "site_evidence": [
+        {
+          "position": 74,
+          "residue": "I",
+          "new_residue": "T",
+          "new_residue_frequency_in_msa": 0.001,
+          "identity_in_msa": 0.51,
+          "conservation": 0.681,
+          "conservation_rank": "24 of 130",
+          "relative_accessibility": 0.012,
+          "most_common_substitutions": "L:43% V:4% M:1%"
+        }
+      ]
+    },
+    "wt_search": {
+      "sites": [
+        74,
+        85
+      ],
+      "neighbors_within_cutoff": [
+        19,
+        21,
+        26,
+        49,
+        50,
+        51,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        68,
+        69,
+        70,
+        72,
+        73,
+        75,
+        76,
+        77,
+        79,
+        83,
+        84,
+        86,
+        87,
+        88,
+        91,
+        97,
+        98,
+        99,
+        102,
+        107,
+        110
+      ],
+      "signed_delta_plddt_site_median": 0.285,
+      "signed_delta_plddt_mean_median": 0.473,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.31,
+            "min": 0.307,
+            "max": 0.323,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.026,
+            "min": 0.017,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.602,
+            "min": 0.548,
+            "max": 0.65,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.041,
+            "min": 0.025,
+            "max": 0.058,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.146,
+            "min": 0.142,
+            "max": 0.15,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.285,
+            "min": 0.19,
+            "max": 0.315,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.065,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.127,
+            "min": 0.095,
+            "max": 0.16,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.473,
+            "min": 0.442,
+            "max": 0.504,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.014,
+            "min": 0.0,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 6.0
+      },
+      "experimental_truth": {
+        "pdb": "1LYY",
+        "crystal_vs_crystal_rmsd": 1.94,
+        "largest_shift": 9.52,
+        "largest_shift_residue": 89,
+        "moved_threshold": 2.0,
+        "moved_residues": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          121
+        ],
+        "predicted_largest_shift": 1.06,
+        "predicted_largest_shift_residue": 91,
+        "rmsd_to_baseline_crystal": {
+          "wt": {
+            "median": 0.409,
+            "min": 0.404,
+            "max": 0.417,
+            "n": 4
+          },
+          "wt_search": {
+            "median": 0.264,
+            "min": 0.263,
+            "max": 0.265,
+            "n": 4
+          }
+        },
+        "rmsd_to_mutant_crystal": {
+          "wt": {
+            "median": 1.783,
+            "min": 1.778,
+            "max": 1.796,
+            "n": 4
+          },
+          "wt_search": {
+            "median": 1.918,
+            "min": 1.915,
+            "max": 1.922,
+            "n": 4
+          }
+        },
+        "experimental_shift_of_moved_residues": {
+          "median": 6.275,
+          "min": 2.071,
+          "max": 9.52,
+          "n": 13
+        },
+        "predicted_shift_of_moved_residues": {
+          "median": 0.604,
+          "min": 0.411,
+          "max": 1.061,
+          "n": 13
+        },
+        "seed_noise_at_moved_residues": {
+          "median": 0.047,
+          "min": 0.031,
+          "max": 0.138,
+          "n": 13
+        },
+        "moved_residues_rmsd_to_baseline_crystal": {
+          "median": 0.603,
+          "min": 0.59,
+          "max": 0.608,
+          "n": 4
+        },
+        "moved_residues_rmsd_to_mutant_crystal": {
+          "median": 6.096,
+          "min": 6.092,
+          "max": 6.103,
+          "n": 4
+        },
+        "per_prediction": [
+          {
+            "model": 1,
+            "seed": 0,
+            "to_baseline_crystal": 0.6,
+            "to_this_crystal": 6.1,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 1,
+            "seed": 1,
+            "to_baseline_crystal": 0.59,
+            "to_this_crystal": 6.1,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 0,
+            "to_baseline_crystal": 0.61,
+            "to_this_crystal": 6.09,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 1,
+            "to_baseline_crystal": 0.6,
+            "to_this_crystal": 6.09,
+            "verdict": "stays with the baseline crystal"
+          }
+        ],
+        "verdict": "stays with the baseline crystal"
+      },
+      "site_evidence": []
+    },
+    "D67H_search": {
+      "sites": [
+        85
+      ],
+      "neighbors_within_cutoff": [
+        68,
+        69,
+        70,
+        72,
+        79,
+        83,
+        84,
+        86,
+        87,
+        88,
+        91,
+        97,
+        98,
+        99
+      ],
+      "signed_delta_plddt_site_median": -0.625,
+      "signed_delta_plddt_mean_median": 0.344,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.332,
+            "min": 0.328,
+            "max": 0.34,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.026,
+            "min": 0.018,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.973,
+            "min": 0.959,
+            "max": 0.974,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.044,
+            "min": 0.031,
+            "max": 0.074,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.164,
+            "min": 0.154,
+            "max": 0.174,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.625,
+            "min": 0.44,
+            "max": 0.75,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.09,
+            "min": 0.0,
+            "max": 0.12,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.1,
+            "min": 0.07,
+            "max": 0.13,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.344,
+            "min": 0.306,
+            "max": 0.416,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.035,
+            "min": 0.008,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 7.6
+      },
+      "experimental_truth": {
+        "pdb": "1LYY",
+        "crystal_vs_crystal_rmsd": 1.94,
+        "largest_shift": 9.52,
+        "largest_shift_residue": 89,
+        "moved_threshold": 2.0,
+        "moved_residues": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          121
+        ],
+        "predicted_largest_shift": 1.12,
+        "predicted_largest_shift_residue": 66,
+        "rmsd_to_baseline_crystal": {
+          "wt": {
+            "median": 0.409,
+            "min": 0.404,
+            "max": 0.417,
+            "n": 4
+          },
+          "D67H_search": {
+            "median": 0.245,
+            "min": 0.245,
+            "max": 0.248,
+            "n": 4
+          }
+        },
+        "rmsd_to_mutant_crystal": {
+          "wt": {
+            "median": 1.783,
+            "min": 1.778,
+            "max": 1.796,
+            "n": 4
+          },
+          "D67H_search": {
+            "median": 1.926,
+            "min": 1.924,
+            "max": 1.929,
+            "n": 4
+          }
+        },
+        "experimental_shift_of_moved_residues": {
+          "median": 6.275,
+          "min": 2.071,
+          "max": 9.52,
+          "n": 13
+        },
+        "predicted_shift_of_moved_residues": {
+          "median": 0.678,
+          "min": 0.409,
+          "max": 1.122,
+          "n": 13
+        },
+        "seed_noise_at_moved_residues": {
+          "median": 0.047,
+          "min": 0.033,
+          "max": 0.138,
+          "n": 13
+        },
+        "moved_residues_rmsd_to_baseline_crystal": {
+          "median": 0.515,
+          "min": 0.503,
+          "max": 0.521,
+          "n": 4
+        },
+        "moved_residues_rmsd_to_mutant_crystal": {
+          "median": 6.13,
+          "min": 6.126,
+          "max": 6.136,
+          "n": 4
+        },
+        "per_prediction": [
+          {
+            "model": 1,
+            "seed": 0,
+            "to_baseline_crystal": 0.5,
+            "to_this_crystal": 6.13,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 1,
+            "seed": 1,
+            "to_baseline_crystal": 0.51,
+            "to_this_crystal": 6.14,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 0,
+            "to_baseline_crystal": 0.52,
+            "to_this_crystal": 6.13,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 1,
+            "to_baseline_crystal": 0.52,
+            "to_this_crystal": 6.13,
+            "verdict": "stays with the baseline crystal"
+          }
+        ],
+        "verdict": "stays with the baseline crystal"
+      },
+      "site_evidence": [
+        {
+          "position": 85,
+          "residue": "D",
+          "new_residue": "H",
+          "new_residue_frequency_in_msa": 0.0565,
+          "identity_in_msa": 0.324,
+          "conservation": 0.254,
+          "conservation_rank": "103 of 130",
+          "relative_accessibility": 0.198,
+          "most_common_substitutions": "N:14% S:13% P:9%"
+        }
+      ]
+    },
+    "I56T_search": {
+      "sites": [
+        74
+      ],
+      "neighbors_within_cutoff": [
+        19,
+        21,
+        26,
+        49,
+        50,
+        51,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        72,
+        73,
+        75,
+        76,
+        77,
+        102,
+        107,
+        110
+      ],
+      "signed_delta_plddt_site_median": -0.09,
+      "signed_delta_plddt_mean_median": 0.46,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.305,
+            "min": 0.302,
+            "max": 0.315,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.026,
+            "min": 0.017,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.4,
+            "min": 0.373,
+            "max": 0.404,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.032,
+            "min": 0.022,
+            "max": 0.058,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.13,
+            "min": 0.129,
+            "max": 0.132,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.09,
+            "min": 0.06,
+            "max": 0.13,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.03,
+            "min": 0.0,
+            "max": 0.07,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.155,
+            "min": 0.12,
+            "max": 0.19,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": false,
+          "verdict": "detectable but smaller than the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.46,
+            "min": 0.44,
+            "max": 0.499,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.019,
+            "min": 0.003,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 6.0
+      },
+      "site_evidence": [
+        {
+          "position": 74,
+          "residue": "I",
+          "new_residue": "T",
+          "new_residue_frequency_in_msa": 0.001,
+          "identity_in_msa": 0.51,
+          "conservation": 0.681,
+          "conservation_rank": "24 of 130",
+          "relative_accessibility": 0.012,
+          "most_common_substitutions": "L:43% V:4% M:1%"
+        }
+      ]
+    },
+    "wt_1LZ1": {
+      "sites": [
+        74,
+        85
+      ],
+      "neighbors_within_cutoff": [
+        19,
+        21,
+        26,
+        49,
+        50,
+        51,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        68,
+        69,
+        70,
+        72,
+        73,
+        75,
+        76,
+        77,
+        79,
+        83,
+        84,
+        86,
+        87,
+        88,
+        91,
+        97,
+        98,
+        99,
+        102,
+        107,
+        110
+      ],
+      "signed_delta_plddt_site_median": 0.237,
+      "signed_delta_plddt_mean_median": 0.358,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.258,
+            "min": 0.239,
+            "max": 0.281,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.025,
+            "min": 0.017,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.498,
+            "min": 0.482,
+            "max": 0.506,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.042,
+            "min": 0.025,
+            "max": 0.058,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.146,
+            "min": 0.142,
+            "max": 0.15,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.237,
+            "min": 0.16,
+            "max": 0.25,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.065,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.127,
+            "min": 0.095,
+            "max": 0.16,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.358,
+            "min": 0.351,
+            "max": 0.416,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.016,
+            "min": 0.003,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 6.0
+      },
+      "experimental_truth": {
+        "pdb": "1LYY",
+        "crystal_vs_crystal_rmsd": 1.94,
+        "largest_shift": 9.52,
+        "largest_shift_residue": 89,
+        "moved_threshold": 2.0,
+        "moved_residues": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          121
+        ],
+        "predicted_largest_shift": 0.85,
+        "predicted_largest_shift_residue": 90,
+        "rmsd_to_baseline_crystal": {
+          "wt": {
+            "median": 0.409,
+            "min": 0.404,
+            "max": 0.417,
+            "n": 4
+          },
+          "wt_1LZ1": {
+            "median": 0.205,
+            "min": 0.195,
+            "max": 0.216,
+            "n": 4
+          }
+        },
+        "rmsd_to_mutant_crystal": {
+          "wt": {
+            "median": 1.783,
+            "min": 1.778,
+            "max": 1.796,
+            "n": 4
+          },
+          "wt_1LZ1": {
+            "median": 1.886,
+            "min": 1.873,
+            "max": 1.9,
+            "n": 4
+          }
+        },
+        "experimental_shift_of_moved_residues": {
+          "median": 6.275,
+          "min": 2.071,
+          "max": 9.52,
+          "n": 13
+        },
+        "predicted_shift_of_moved_residues": {
+          "median": 0.475,
+          "min": 0.225,
+          "max": 0.855,
+          "n": 13
+        },
+        "seed_noise_at_moved_residues": {
+          "median": 0.047,
+          "min": 0.031,
+          "max": 0.138,
+          "n": 13
+        },
+        "moved_residues_rmsd_to_baseline_crystal": {
+          "median": 0.422,
+          "min": 0.379,
+          "max": 0.461,
+          "n": 4
+        },
+        "moved_residues_rmsd_to_mutant_crystal": {
+          "median": 5.972,
+          "min": 5.934,
+          "max": 6.012,
+          "n": 4
+        },
+        "per_prediction": [
+          {
+            "model": 1,
+            "seed": 0,
+            "to_baseline_crystal": 0.39,
+            "to_this_crystal": 6.01,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 1,
+            "seed": 1,
+            "to_baseline_crystal": 0.38,
+            "to_this_crystal": 6.01,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 0,
+            "to_baseline_crystal": 0.46,
+            "to_this_crystal": 5.93,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 1,
+            "to_baseline_crystal": 0.46,
+            "to_this_crystal": 5.93,
+            "verdict": "stays with the baseline crystal"
+          }
+        ],
+        "verdict": "stays with the baseline crystal"
+      },
+      "site_evidence": []
+    },
+    "D67H_1LZ1": {
+      "sites": [
+        85
+      ],
+      "neighbors_within_cutoff": [
+        68,
+        69,
+        70,
+        72,
+        79,
+        83,
+        84,
+        86,
+        87,
+        88,
+        91,
+        97,
+        98,
+        99
+      ],
+      "signed_delta_plddt_site_median": -0.78,
+      "signed_delta_plddt_mean_median": 0.235,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.277,
+            "min": 0.262,
+            "max": 0.291,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.027,
+            "min": 0.022,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.927,
+            "min": 0.921,
+            "max": 0.942,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.047,
+            "min": 0.028,
+            "max": 0.074,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.164,
+            "min": 0.154,
+            "max": 0.174,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.78,
+            "min": 0.56,
+            "max": 0.94,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.06,
+            "min": 0.0,
+            "max": 0.06,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.1,
+            "min": 0.07,
+            "max": 0.13,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.235,
+            "min": 0.173,
+            "max": 0.319,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.026,
+            "min": 0.01,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 7.6
+      },
+      "experimental_truth": {
+        "pdb": "1LYY",
+        "crystal_vs_crystal_rmsd": 1.94,
+        "largest_shift": 9.52,
+        "largest_shift_residue": 89,
+        "moved_threshold": 2.0,
+        "moved_residues": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          121
+        ],
+        "predicted_largest_shift": 0.88,
+        "predicted_largest_shift_residue": 90,
+        "rmsd_to_baseline_crystal": {
+          "wt": {
+            "median": 0.409,
+            "min": 0.404,
+            "max": 0.417,
+            "n": 4
+          },
+          "D67H_1LZ1": {
+            "median": 0.205,
+            "min": 0.196,
+            "max": 0.214,
+            "n": 4
+          }
+        },
+        "rmsd_to_mutant_crystal": {
+          "wt": {
+            "median": 1.783,
+            "min": 1.778,
+            "max": 1.796,
+            "n": 4
+          },
+          "D67H_1LZ1": {
+            "median": 1.897,
+            "min": 1.885,
+            "max": 1.91,
+            "n": 4
+          }
+        },
+        "experimental_shift_of_moved_residues": {
+          "median": 6.275,
+          "min": 2.071,
+          "max": 9.52,
+          "n": 13
+        },
+        "predicted_shift_of_moved_residues": {
+          "median": 0.548,
+          "min": 0.234,
+          "max": 0.885,
+          "n": 13
+        },
+        "seed_noise_at_moved_residues": {
+          "median": 0.047,
+          "min": 0.031,
+          "max": 0.138,
+          "n": 13
+        },
+        "moved_residues_rmsd_to_baseline_crystal": {
+          "median": 0.388,
+          "min": 0.347,
+          "max": 0.402,
+          "n": 4
+        },
+        "moved_residues_rmsd_to_mutant_crystal": {
+          "median": 6.012,
+          "min": 5.975,
+          "max": 6.051,
+          "n": 4
+        },
+        "per_prediction": [
+          {
+            "model": 1,
+            "seed": 0,
+            "to_baseline_crystal": 0.38,
+            "to_this_crystal": 6.05,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 1,
+            "seed": 1,
+            "to_baseline_crystal": 0.35,
+            "to_this_crystal": 6.05,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 0,
+            "to_baseline_crystal": 0.4,
+            "to_this_crystal": 5.98,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 1,
+            "to_baseline_crystal": 0.4,
+            "to_this_crystal": 5.98,
+            "verdict": "stays with the baseline crystal"
+          }
+        ],
+        "verdict": "stays with the baseline crystal"
+      },
+      "site_evidence": [
+        {
+          "position": 85,
+          "residue": "D",
+          "new_residue": "H",
+          "new_residue_frequency_in_msa": 0.0565,
+          "identity_in_msa": 0.324,
+          "conservation": 0.254,
+          "conservation_rank": "103 of 130",
+          "relative_accessibility": 0.198,
+          "most_common_substitutions": "N:14% S:13% P:9%"
+        }
+      ]
+    },
+    "wt_1LYY": {
+      "sites": [
+        74,
+        85
+      ],
+      "neighbors_within_cutoff": [
+        19,
+        21,
+        26,
+        49,
+        50,
+        51,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        68,
+        69,
+        70,
+        72,
+        73,
+        75,
+        76,
+        77,
+        79,
+        83,
+        84,
+        86,
+        87,
+        88,
+        91,
+        97,
+        98,
+        99,
+        102,
+        107,
+        110
+      ],
+      "signed_delta_plddt_site_median": -0.155,
+      "signed_delta_plddt_mean_median": -0.149,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.252,
+            "min": 0.234,
+            "max": 0.275,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.029,
+            "min": 0.022,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.451,
+            "min": 0.381,
+            "max": 0.497,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.047,
+            "min": 0.035,
+            "max": 0.058,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.146,
+            "min": 0.142,
+            "max": 0.15,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 0.155,
+            "min": 0.095,
+            "max": 0.345,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.032,
+            "min": 0.0,
+            "max": 0.065,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.127,
+            "min": 0.095,
+            "max": 0.16,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.149,
+            "min": 0.1,
+            "max": 0.195,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.028,
+            "min": 0.005,
+            "max": 0.063,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": false,
+          "verdict": "detectable but smaller than the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 6.0
+      },
+      "experimental_truth": {
+        "pdb": "1LYY",
+        "crystal_vs_crystal_rmsd": 1.94,
+        "largest_shift": 9.52,
+        "largest_shift_residue": 89,
+        "moved_threshold": 2.0,
+        "moved_residues": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          121
+        ],
+        "predicted_largest_shift": 0.77,
+        "predicted_largest_shift_residue": 138,
+        "rmsd_to_baseline_crystal": {
+          "wt": {
+            "median": 0.409,
+            "min": 0.404,
+            "max": 0.417,
+            "n": 4
+          },
+          "wt_1LYY": {
+            "median": 0.528,
+            "min": 0.508,
+            "max": 0.54,
+            "n": 4
+          }
+        },
+        "rmsd_to_mutant_crystal": {
+          "wt": {
+            "median": 1.783,
+            "min": 1.778,
+            "max": 1.796,
+            "n": 4
+          },
+          "wt_1LYY": {
+            "median": 1.646,
+            "min": 1.64,
+            "max": 1.653,
+            "n": 4
+          }
+        },
+        "experimental_shift_of_moved_residues": {
+          "median": 6.275,
+          "min": 2.071,
+          "max": 9.52,
+          "n": 13
+        },
+        "predicted_shift_of_moved_residues": {
+          "median": 0.445,
+          "min": 0.189,
+          "max": 0.713,
+          "n": 13
+        },
+        "seed_noise_at_moved_residues": {
+          "median": 0.071,
+          "min": 0.042,
+          "max": 0.138,
+          "n": 13
+        },
+        "moved_residues_rmsd_to_baseline_crystal": {
+          "median": 1.401,
+          "min": 1.344,
+          "max": 1.442,
+          "n": 4
+        },
+        "moved_residues_rmsd_to_mutant_crystal": {
+          "median": 5.265,
+          "min": 5.244,
+          "max": 5.286,
+          "n": 4
+        },
+        "per_prediction": [
+          {
+            "model": 1,
+            "seed": 0,
+            "to_baseline_crystal": 1.44,
+            "to_this_crystal": 5.26,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 1,
+            "seed": 1,
+            "to_baseline_crystal": 1.44,
+            "to_this_crystal": 5.24,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 0,
+            "to_baseline_crystal": 1.34,
+            "to_this_crystal": 5.29,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 1,
+            "to_baseline_crystal": 1.36,
+            "to_this_crystal": 5.27,
+            "verdict": "stays with the baseline crystal"
+          }
+        ],
+        "verdict": "stays with the baseline crystal"
+      },
+      "site_evidence": []
+    },
+    "D67H_1LYY": {
+      "sites": [
+        85
+      ],
+      "neighbors_within_cutoff": [
+        68,
+        69,
+        70,
+        72,
+        79,
+        83,
+        84,
+        86,
+        87,
+        88,
+        91,
+        97,
+        98,
+        99
+      ],
+      "signed_delta_plddt_site_median": -4.81,
+      "signed_delta_plddt_mean_median": -0.612,
+      "metrics": {
+        "Cα RMSD, folded core (Å)": {
+          "mutation": {
+            "median": 0.256,
+            "min": 0.246,
+            "max": 0.273,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.028,
+            "min": 0.022,
+            "max": 0.038,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.107,
+            "min": 0.104,
+            "max": 0.11,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "All-atom RMSD around the site (Å)": {
+          "mutation": {
+            "median": 0.858,
+            "min": 0.64,
+            "max": 0.884,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.065,
+            "min": 0.041,
+            "max": 0.634,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.164,
+            "min": 0.154,
+            "max": 0.174,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| at the site": {
+          "mutation": {
+            "median": 4.81,
+            "min": 4.74,
+            "max": 5.75,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.095,
+            "min": 0.0,
+            "max": 0.94,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.1,
+            "min": 0.07,
+            "max": 0.13,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        },
+        "|ΔpLDDT| whole protein": {
+          "mutation": {
+            "median": 0.612,
+            "min": 0.521,
+            "max": 0.748,
+            "n": 4
+          },
+          "seed_noise": {
+            "median": 0.042,
+            "min": 0.013,
+            "max": 0.143,
+            "n": 4
+          },
+          "model_noise": {
+            "median": 0.158,
+            "min": 0.138,
+            "max": 0.178,
+            "n": 2
+          },
+          "exceeds_seed_noise": true,
+          "exceeds_model_noise": true,
+          "verdict": "above noise and above the difference between networks"
+        }
+      },
+      "distance_to_functional_sites_A": {
+        "Catalytic Glu35 and Asp53 (mature numbering)": 7.6
+      },
+      "experimental_truth": {
+        "pdb": "1LYY",
+        "crystal_vs_crystal_rmsd": 1.94,
+        "largest_shift": 9.52,
+        "largest_shift_residue": 89,
+        "moved_threshold": 2.0,
+        "moved_residues": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          121
+        ],
+        "predicted_largest_shift": 0.89,
+        "predicted_largest_shift_residue": 85,
+        "rmsd_to_baseline_crystal": {
+          "wt": {
+            "median": 0.409,
+            "min": 0.404,
+            "max": 0.417,
+            "n": 4
+          },
+          "D67H_1LYY": {
+            "median": 0.501,
+            "min": 0.491,
+            "max": 0.516,
+            "n": 4
+          }
+        },
+        "rmsd_to_mutant_crystal": {
+          "wt": {
+            "median": 1.783,
+            "min": 1.778,
+            "max": 1.796,
+            "n": 4
+          },
+          "D67H_1LYY": {
+            "median": 1.664,
+            "min": 1.66,
+            "max": 1.667,
+            "n": 4
+          }
+        },
+        "experimental_shift_of_moved_residues": {
+          "median": 6.275,
+          "min": 2.071,
+          "max": 9.52,
+          "n": 13
+        },
+        "predicted_shift_of_moved_residues": {
+          "median": 0.428,
+          "min": 0.172,
+          "max": 0.635,
+          "n": 13
+        },
+        "seed_noise_at_moved_residues": {
+          "median": 0.068,
+          "min": 0.041,
+          "max": 0.138,
+          "n": 13
+        },
+        "moved_residues_rmsd_to_baseline_crystal": {
+          "median": 1.281,
+          "min": 1.241,
+          "max": 1.326,
+          "n": 4
+        },
+        "moved_residues_rmsd_to_mutant_crystal": {
+          "median": 5.322,
+          "min": 5.309,
+          "max": 5.326,
+          "n": 4
+        },
+        "per_prediction": [
+          {
+            "model": 1,
+            "seed": 0,
+            "to_baseline_crystal": 1.31,
+            "to_this_crystal": 5.33,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 1,
+            "seed": 1,
+            "to_baseline_crystal": 1.33,
+            "to_this_crystal": 5.32,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 0,
+            "to_baseline_crystal": 1.25,
+            "to_this_crystal": 5.31,
+            "verdict": "stays with the baseline crystal"
+          },
+          {
+            "model": 2,
+            "seed": 1,
+            "to_baseline_crystal": 1.24,
+            "to_this_crystal": 5.32,
+            "verdict": "stays with the baseline crystal"
+          }
+        ],
+        "verdict": "stays with the baseline crystal"
+      },
+      "site_evidence": [
+        {
+          "position": 85,
+          "residue": "D",
+          "new_residue": "H",
+          "new_residue_frequency_in_msa": 0.0565,
+          "identity_in_msa": 0.324,
+          "conservation": 0.254,
+          "conservation_rank": "103 of 130",
+          "relative_accessibility": 0.198,
+          "most_common_substitutions": "N:14% S:13% P:9%"
+        }
+      ]
+    }
+  }
+}

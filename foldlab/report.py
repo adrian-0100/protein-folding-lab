@@ -305,8 +305,8 @@ def write_report(exp: Experiment, summary: dict, provenance: dict) -> None:
         truth = info.get("experimental_truth")
         if truth:
             base = summary["baseline"]
-            lines += ["", f"## {mutant}: prediction against the mutant's own crystal structure ({truth['pdb']})", "",
-                      f"What the experiment shows: overlaid on {pdb}, the crystal structure of {mutant} differs by "
+            lines += ["", f"## {mutant}: prediction against the crystal structure {truth['pdb']}", "",
+                      f"What the experiment shows: overlaid on {pdb}, the crystal structure {truth['pdb']} differs by "
                       f"{truth['crystal_vs_crystal_rmsd']:.2f} Å (Cα RMSD), with the largest shift, "
                       f"{truth['largest_shift']:.1f} Å, at residue {truth['largest_shift_residue']}. "
                       + (f"Residues that move more than {truth['moved_threshold']:g} Å: "
@@ -320,10 +320,10 @@ def write_report(exp: Experiment, summary: dict, provenance: dict) -> None:
                           f"| Shift between the two crystal structures | {_range(truth['experimental_shift_of_moved_residues'])} |",
                           f"| Shift between {base} and {mutant} predictions | {_range(truth['predicted_shift_of_moved_residues'])} |",
                           f"| Largest seed noise there | {_range(truth['seed_noise_at_moved_residues'])} |",
-                          f"| {mutant} predictions, distance from the {base} crystal | {_range(truth['moved_residues_rmsd_to_baseline_crystal'])} |",
-                          f"| {mutant} predictions, distance from the {mutant} crystal | {_range(truth['moved_residues_rmsd_to_mutant_crystal'])} |",
+                          f"| {mutant} predictions, distance from {pdb} ({base} crystal) | {_range(truth['moved_residues_rmsd_to_baseline_crystal'])} |",
+                          f"| {mutant} predictions, distance from {truth['pdb']} | {_range(truth['moved_residues_rmsd_to_mutant_crystal'])} |",
                           ""]
-            lines += [f"| Cα RMSD over the whole protein, median (min-max), Å | vs {pdb} ({base} crystal) | vs {truth['pdb']} ({mutant} crystal) |",
+            lines += [f"| Cα RMSD over the whole protein, median (min-max), Å | vs {pdb} ({base} crystal) | vs {truth['pdb']} |",
                       "|---|---|---|"]
             lines += [f"| {name} predictions | {_range(truth['rmsd_to_baseline_crystal'][name])} | {_range(truth['rmsd_to_mutant_crystal'][name])} |"
                       for name in (base, mutant)]

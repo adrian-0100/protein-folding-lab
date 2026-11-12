@@ -1,0 +1,176 @@
+{
+  "experiment": "004-lysozyme-templates",
+  "software": {
+    "colabfold": "1.6.3",
+    "alphafold-colabfold": "2.3.20",
+    "jax": "0.11.2",
+    "python": "3.12.16",
+    "platform": "macOS-26.4.1-arm64-arm-64bit"
+  },
+  "weights": "alphafold_params_2021-07-14 (AlphaFold2-ptm)",
+  "settings": {
+    "model_type": "alphafold2_ptm",
+    "msa_mode": "mmseqs2_uniref_env",
+    "models": [
+      1,
+      2
+    ],
+    "num_recycle": 3,
+    "num_seeds": 2,
+    "random_seed": 0
+  },
+  "inputs_sha256": {
+    "msa/wt.a3m": "a61a2ca51f777c4c9149555929780d2356d35035f705e6175408682bb5dbbe94",
+    "msa/D67H.a3m": "921e5322c432a7f9fd062f4da31c938d89e5ed12fc22afffaaaecb2005c5a8f1",
+    "msa/I56T.a3m": "a3231c2779cd6afd333858789823fd90b8eac770505dbe29c90e7f181a64455b",
+    "msa/wt_search.a3m": "7d34c855a07946cf2ddf7df50a31a427f729431e6403f96c48d180d52986cfee",
+    "msa/D67H_search.a3m": "921e5322c432a7f9fd062f4da31c938d89e5ed12fc22afffaaaecb2005c5a8f1",
+    "msa/I56T_search.a3m": "a3231c2779cd6afd333858789823fd90b8eac770505dbe29c90e7f181a64455b",
+    "msa/wt_1LZ1.a3m": "7d34c855a07946cf2ddf7df50a31a427f729431e6403f96c48d180d52986cfee",
+    "msa/D67H_1LZ1.a3m": "921e5322c432a7f9fd062f4da31c938d89e5ed12fc22afffaaaecb2005c5a8f1",
+    "msa/wt_1LYY.a3m": "7d34c855a07946cf2ddf7df50a31a427f729431e6403f96c48d180d52986cfee",
+    "msa/D67H_1LYY.a3m": "921e5322c432a7f9fd062f4da31c938d89e5ed12fc22afffaaaecb2005c5a8f1"
+  },
+  "templates": {
+    "wt_search": {
+      "asked": "search",
+      "used": [
+        "133l",
+        "1ckd",
+        "1di3",
+        "1gb5",
+        "1gb7",
+        "1gb8",
+        "1ge3",
+        "1gfr",
+        "1i1z",
+        "1i20",
+        "1i22",
+        "1lhh",
+        "1lhl",
+        "1tdy",
+        "1ubz",
+        "1wqn",
+        "1wqo",
+        "1yan",
+        "3lhm",
+        "3ln2"
+      ]
+    },
+    "D67H_search": {
+      "asked": "search",
+      "used": [
+        "133l",
+        "1ckd",
+        "1di3",
+        "1gb5",
+        "1gb7",
+        "1gb8",
+        "1ge3",
+        "1gfr",
+        "1i1z",
+        "1i20",
+        "1i22",
+        "1lhh",
+        "1lhl",
+        "1tdy",
+        "1ubz",
+        "1wqn",
+        "1wqo",
+        "1yan",
+        "3lhm",
+        "3ln2"
+      ]
+    },
+    "I56T_search": {
+      "asked": "search",
+      "used": [
+        "133l",
+        "1ckd",
+        "1di3",
+        "1gb5",
+        "1gb7",
+        "1gb8",
+        "1ge3",
+        "1gfr",
+        "1i1z",
+        "1i20",
+        "1i22",
+        "1lhh",
+        "1lhl",
+        "1ouh",
+        "1tdy",
+        "1ubz",
+        "1wqn",
+        "1wqo",
+        "3lhm",
+        "3ln2"
+      ]
+    },
+    "wt_1LZ1": {
+      "asked": [
+        "1LZ1"
+      ],
+      "used": [
+        "1lz1"
+      ]
+    },
+    "D67H_1LZ1": {
+      "asked": [
+        "1LZ1"
+      ],
+      "used": [
+        "1lz1"
+      ]
+    },
+    "wt_1LYY": {
+      "asked": [
+        "1LYY"
+      ],
+      "used": [
+        "1lyy"
+      ]
+    },
+    "D67H_1LYY": {
+      "asked": [
+        "1LYY"
+      ],
+      "used": [
+        "1lyy"
+      ]
+    }
+  },
+  "prediction_runs": [
+    {
+      "recorded_utc": "2026-11-11T23:21:32+00:00",
+      "variants": [
+        "wt_search",
+        "D67H_search",
+        "I56T_search",
+        "wt_1LZ1",
+        "D67H_1LZ1",
+        "wt_1LYY",
+        "D67H_1LYY"
+      ],
+      "parallel_processes": 10,
+      "wall_seconds": 2148.9,
+      "seconds_per_process": {
+        "wt_search model 1": 1512.9,
+        "wt_search model 2": 1503.1,
+        "D67H_search model 1": 1517.2,
+        "D67H_search model 2": 1504.6,
+        "I56T_search model 1": 1513.6,
+        "I56T_search model 2": 1507.8,
+        "wt_1LZ1 model 1": 1441.9,
+        "wt_1LZ1 model 2": 1449.0,
+        "D67H_1LZ1 model 1": 1455.7,
+        "D67H_1LZ1 model 2": 1435.7,
+        "wt_1LYY model 1": 708.2,
+        "wt_1LYY model 2": 703.0,
+        "D67H_1LYY model 1": 698.0,
+        "D67H_1LYY model 2": 693.2
+      },
+      "machine": "remote-gpu-pc"
+    }
+  ]
+}

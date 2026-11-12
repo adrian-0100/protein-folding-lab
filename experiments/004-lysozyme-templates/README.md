@@ -1,7 +1,9 @@
 # Experiment 004: what if AlphaFold2 is shown the answer?
 
-**Status: prepared, not run (2026-11-10).** The two template structures are fetched and the alignment of experiment 002 is copied over. Nothing has been predicted. This is the protocol. Hypotheses and decision rules
-are fixed here before any prediction is made.
+Written on 2026-11-10, before any prediction with a template was made; run on
+2026-11-11. Results are in [results/REPORT.md](results/REPORT.md), conclusions in
+[NOTEBOOK.md](NOTEBOOK.md). What follows is the protocol as it stood before the
+run, hypotheses and decision rules included.
 
 ## Question
 

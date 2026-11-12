@@ -1,0 +1,20 @@
+2026-11-09 22:01:32,437 Running colabfold 1.6.3
+2026-11-09 22:01:32,455 WARNING: no GPU detected, will be using CPU
+2026-11-09 22:01:32,534 Found 5 citations for tools or databases
+2026-11-09 22:01:32,534 Query 1/1: D67H (length 130)
+2026-11-09 22:01:39.225 python[24403:13523482] +[NSXPCSharedListener endpointForReply:withListenerName:replyErrorCode:]: an error occurred while attempting to obtain endpoint for listener 'ClientCallsAuxiliary': Connection interrupted
+2026-11-09 22:01:39,393 Setting max_seq=512, max_extra_seq=4752
+2026-11-09 22:03:22,320 alphafold2_ptm_model_2_seed_000 recycle=0 pLDDT=97.2 pTM=0.895
+2026-11-09 22:05:00,428 alphafold2_ptm_model_2_seed_000 recycle=1 pLDDT=97.8 pTM=0.902 tol=0.1
+2026-11-09 22:06:38,409 alphafold2_ptm_model_2_seed_000 recycle=2 pLDDT=97.9 pTM=0.905 tol=0.0473
+2026-11-09 22:08:16,484 alphafold2_ptm_model_2_seed_000 recycle=3 pLDDT=97.9 pTM=0.905 tol=0.0283
+2026-11-09 22:08:16,484 alphafold2_ptm_model_2_seed_000 took 395.4s (3 recycles)
+2026-11-09 22:09:54,529 alphafold2_ptm_model_2_seed_001 recycle=0 pLDDT=97.4 pTM=0.9
+2026-11-09 22:11:33,185 alphafold2_ptm_model_2_seed_001 recycle=1 pLDDT=97.9 pTM=0.904 tol=0.115
+2026-11-09 22:13:11,069 alphafold2_ptm_model_2_seed_001 recycle=2 pLDDT=98 pTM=0.905 tol=0.0486
+2026-11-09 22:14:43,981 alphafold2_ptm_model_2_seed_001 recycle=3 pLDDT=98 pTM=0.905 tol=0.0276
+2026-11-09 22:14:43,982 alphafold2_ptm_model_2_seed_001 took 387.3s (3 recycles)
+2026-11-09 22:14:43,987 reranking models by 'plddt' metric
+2026-11-09 22:14:43,987 rank_001_alphafold2_ptm_model_2_seed_001 pLDDT=98 pTM=0.905
+2026-11-09 22:14:43,987 rank_002_alphafold2_ptm_model_2_seed_000 pLDDT=97.9 pTM=0.905
+2026-11-09 22:14:44,190 Done

@@ -1,0 +1,23 @@
+2026-11-11 16:45:44,449 Running colabfold 1.6.3
+2026-11-11 16:45:44,478 WARNING: no GPU detected, will be using CPU
+2026-11-11 16:45:44,600 Found 8 citations for tools or databases
+2026-11-11 16:45:44,601 Query 1/1: wt_search (length 130)
+2026-11-11 16:45:46,495 Sleeping for 10s. Reason: PENDING
+2026-11-11 16:45:56,911 Sleeping for 7s. Reason: RUNNING
+2026-11-11 16:46:04,286 Sleeping for 10s. Reason: RUNNING
+2026-11-11 16:46:19,444 Sequence 0 found templates: ['1lhl_A', '1gb7_A', '1di3_A', '1gb8_A', '1gb5_A', '1wqn_A', '1lhh_A', '1gfr_A', '1i1z_A', '1i20_A', '1ge3_A', '3ln2_B', '1yan_A', '3lhm_A', '1wqo_A', '1ckd_A', '133l_A', '1tdy_A', '1i22_B', '1ubz_A']
+2026-11-11 16:46:19,747 Setting max_seq=512, max_extra_seq=4755
+2026-11-11 16:49:32,885 alphafold2_ptm_model_1_seed_000 recycle=0 pLDDT=98.3 pTM=0.907
+2026-11-11 16:52:35,018 alphafold2_ptm_model_1_seed_000 recycle=1 pLDDT=98.4 pTM=0.911 tol=0.0756
+2026-11-11 16:55:40,582 alphafold2_ptm_model_1_seed_000 recycle=2 pLDDT=98.4 pTM=0.91 tol=0.0343
+2026-11-11 16:58:45,563 alphafold2_ptm_model_1_seed_000 recycle=3 pLDDT=98.4 pTM=0.911 tol=0.017
+2026-11-11 16:58:45,563 alphafold2_ptm_model_1_seed_000 took 743.6s (3 recycles)
+2026-11-11 17:01:50,753 alphafold2_ptm_model_1_seed_001 recycle=0 pLDDT=98.3 pTM=0.907
+2026-11-11 17:04:51,304 alphafold2_ptm_model_1_seed_001 recycle=1 pLDDT=98.4 pTM=0.911 tol=0.0743
+2026-11-11 17:07:56,287 alphafold2_ptm_model_1_seed_001 recycle=2 pLDDT=98.4 pTM=0.91 tol=0.035
+2026-11-11 17:10:55,947 alphafold2_ptm_model_1_seed_001 recycle=3 pLDDT=98.4 pTM=0.911 tol=0.015
+2026-11-11 17:10:55,947 alphafold2_ptm_model_1_seed_001 took 730.2s (3 recycles)
+2026-11-11 17:10:55,952 reranking models by 'plddt' metric
+2026-11-11 17:10:55,953 rank_001_alphafold2_ptm_model_1_seed_001 pLDDT=98.4 pTM=0.911
+2026-11-11 17:10:55,953 rank_002_alphafold2_ptm_model_1_seed_000 pLDDT=98.4 pTM=0.911
+2026-11-11 17:10:56,161 Done

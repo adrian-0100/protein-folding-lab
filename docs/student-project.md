@@ -138,6 +138,9 @@ is one command; see [the next three experiments](next-experiments.md).
    ran without templates. Rerun it with templates on and compare. A one-setting
    change with a clear outcome; good for a short project:
    [experiment 004](../experiments/004-lysozyme-templates/README.md).
+   This one has been run; its
+   [notebook](../experiments/004-lysozyme-templates/NOTEBOOK.md) has the answer,
+   and the follow-up it leaves open.
 4. **Bring it to physiology.** Apply the same design to a protein from Fisiología
    Avanzada whose mutant has a crystal structure, chosen by the student. The
    criteria: under about 250 residues, single chain, wild-type and mutant
